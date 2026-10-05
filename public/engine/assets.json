@@ -1,0 +1,1110 @@
+[
+  {
+    "path": "data/cMap/Adobe-CNS1/Adobe-CNS1-0",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/Adobe-CNS1-0"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/Adobe-CNS1-1",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/Adobe-CNS1-1"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/Adobe-CNS1-2",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/Adobe-CNS1-2"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/Adobe-CNS1-3",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/Adobe-CNS1-3"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/Adobe-CNS1-4",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/Adobe-CNS1-4"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/Adobe-CNS1-5",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/Adobe-CNS1-5"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/Adobe-CNS1-6",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/Adobe-CNS1-6"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/Adobe-CNS1-7",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/Adobe-CNS1-7"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/Adobe-CNS1-B5pc",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/Adobe-CNS1-B5pc"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/Adobe-CNS1-ETen-B5",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/Adobe-CNS1-ETen-B5"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/Adobe-CNS1-H-CID",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/Adobe-CNS1-H-CID"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/Adobe-CNS1-H-Host",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/Adobe-CNS1-H-Host"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/Adobe-CNS1-H-Mac",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/Adobe-CNS1-H-Mac"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/Adobe-CNS1-UCS2",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/Adobe-CNS1-UCS2"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/B5-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/B5-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/B5-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/B5-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/B5pc-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/B5pc-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/B5pc-UCS2",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/B5pc-UCS2"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/B5pc-UCS2C",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/B5pc-UCS2C"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/B5pc-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/B5pc-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/CNS-EUC-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/CNS-EUC-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/CNS-EUC-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/CNS-EUC-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/CNS1-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/CNS1-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/CNS1-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/CNS1-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/CNS2-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/CNS2-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/CNS2-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/CNS2-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/ETHK-B5-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/ETHK-B5-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/ETHK-B5-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/ETHK-B5-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/ETen-B5-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/ETen-B5-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/ETen-B5-UCS2",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/ETen-B5-UCS2"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/ETen-B5-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/ETen-B5-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/ETenms-B5-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/ETenms-B5-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/ETenms-B5-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/ETenms-B5-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/HKdla-B5-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/HKdla-B5-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/HKdla-B5-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/HKdla-B5-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/HKdlb-B5-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/HKdlb-B5-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/HKdlb-B5-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/HKdlb-B5-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/HKgccs-B5-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/HKgccs-B5-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/HKgccs-B5-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/HKgccs-B5-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/HKm314-B5-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/HKm314-B5-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/HKm314-B5-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/HKm314-B5-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/HKm471-B5-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/HKm471-B5-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/HKm471-B5-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/HKm471-B5-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/HKscs-B5-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/HKscs-B5-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/HKscs-B5-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/HKscs-B5-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/UCS2-B5pc",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/UCS2-B5pc"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/UCS2-ETen-B5",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/UCS2-ETen-B5"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/UniCNS-UCS2-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/UniCNS-UCS2-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/UniCNS-UCS2-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/UniCNS-UCS2-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/UniCNS-UTF16-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/UniCNS-UTF16-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/UniCNS-UTF16-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/UniCNS-UTF16-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/UniCNS-UTF32-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/UniCNS-UTF32-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/UniCNS-UTF32-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/UniCNS-UTF32-V"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/UniCNS-UTF8-H",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/UniCNS-UTF8-H"
+  },
+  {
+    "path": "data/cMap/Adobe-CNS1/UniCNS-UTF8-V",
+    "virtual": "/poppler-data/cMap/Adobe-CNS1/UniCNS-UTF8-V"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/Adobe-GB1-0",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/Adobe-GB1-0"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/Adobe-GB1-1",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/Adobe-GB1-1"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/Adobe-GB1-2",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/Adobe-GB1-2"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/Adobe-GB1-3",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/Adobe-GB1-3"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/Adobe-GB1-4",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/Adobe-GB1-4"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/Adobe-GB1-5",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/Adobe-GB1-5"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/Adobe-GB1-GBK-EUC",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/Adobe-GB1-GBK-EUC"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/Adobe-GB1-GBpc-EUC",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/Adobe-GB1-GBpc-EUC"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/Adobe-GB1-H-CID",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/Adobe-GB1-H-CID"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/Adobe-GB1-H-Host",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/Adobe-GB1-H-Host"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/Adobe-GB1-H-Mac",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/Adobe-GB1-H-Mac"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/Adobe-GB1-UCS2",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/Adobe-GB1-UCS2"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GB-EUC-H",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GB-EUC-H"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GB-EUC-V",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GB-EUC-V"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GB-H",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GB-H"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GB-V",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GB-V"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBK-EUC-H",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBK-EUC-H"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBK-EUC-UCS2",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBK-EUC-UCS2"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBK-EUC-V",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBK-EUC-V"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBK2K-H",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBK2K-H"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBK2K-V",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBK2K-V"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBKp-EUC-H",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBKp-EUC-H"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBKp-EUC-V",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBKp-EUC-V"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBT-EUC-H",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBT-EUC-H"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBT-EUC-V",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBT-EUC-V"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBT-H",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBT-H"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBT-V",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBT-V"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBTpc-EUC-H",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBTpc-EUC-H"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBTpc-EUC-V",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBTpc-EUC-V"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBpc-EUC-H",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBpc-EUC-H"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBpc-EUC-UCS2",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBpc-EUC-UCS2"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBpc-EUC-UCS2C",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBpc-EUC-UCS2C"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/GBpc-EUC-V",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/GBpc-EUC-V"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/UCS2-GBK-EUC",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/UCS2-GBK-EUC"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/UCS2-GBpc-EUC",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/UCS2-GBpc-EUC"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/UniGB-UCS2-H",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/UniGB-UCS2-H"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/UniGB-UCS2-V",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/UniGB-UCS2-V"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/UniGB-UTF16-H",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/UniGB-UTF16-H"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/UniGB-UTF16-V",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/UniGB-UTF16-V"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/UniGB-UTF32-H",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/UniGB-UTF32-H"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/UniGB-UTF32-V",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/UniGB-UTF32-V"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/UniGB-UTF8-H",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/UniGB-UTF8-H"
+  },
+  {
+    "path": "data/cMap/Adobe-GB1/UniGB-UTF8-V",
+    "virtual": "/poppler-data/cMap/Adobe-GB1/UniGB-UTF8-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/78-EUC-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/78-EUC-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/78-EUC-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/78-EUC-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/78-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/78-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/78-RKSJ-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/78-RKSJ-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/78-RKSJ-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/78-RKSJ-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/78-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/78-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/78ms-RKSJ-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/78ms-RKSJ-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/78ms-RKSJ-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/78ms-RKSJ-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/83pv-RKSJ-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/83pv-RKSJ-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/90ms-RKSJ-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/90ms-RKSJ-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/90ms-RKSJ-UCS2",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/90ms-RKSJ-UCS2"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/90ms-RKSJ-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/90ms-RKSJ-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/90msp-RKSJ-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/90msp-RKSJ-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/90msp-RKSJ-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/90msp-RKSJ-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/90pv-RKSJ-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/90pv-RKSJ-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/90pv-RKSJ-UCS2",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/90pv-RKSJ-UCS2"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/90pv-RKSJ-UCS2C",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/90pv-RKSJ-UCS2C"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/90pv-RKSJ-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/90pv-RKSJ-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Add-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Add-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Add-RKSJ-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Add-RKSJ-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Add-RKSJ-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Add-RKSJ-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Add-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Add-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Adobe-Japan1-0",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Adobe-Japan1-0"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Adobe-Japan1-1",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Adobe-Japan1-1"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Adobe-Japan1-2",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Adobe-Japan1-2"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Adobe-Japan1-3",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Adobe-Japan1-3"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Adobe-Japan1-4",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Adobe-Japan1-4"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Adobe-Japan1-5",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Adobe-Japan1-5"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Adobe-Japan1-6",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Adobe-Japan1-6"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Adobe-Japan1-7",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Adobe-Japan1-7"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Adobe-Japan1-90ms-RKSJ",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Adobe-Japan1-90ms-RKSJ"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Adobe-Japan1-90pv-RKSJ",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Adobe-Japan1-90pv-RKSJ"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Adobe-Japan1-H-CID",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Adobe-Japan1-H-CID"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Adobe-Japan1-H-Host",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Adobe-Japan1-H-Host"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Adobe-Japan1-H-Mac",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Adobe-Japan1-H-Mac"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Adobe-Japan1-PS-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Adobe-Japan1-PS-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Adobe-Japan1-PS-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Adobe-Japan1-PS-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Adobe-Japan1-UCS2",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Adobe-Japan1-UCS2"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/EUC-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/EUC-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/EUC-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/EUC-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Ext-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Ext-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Ext-RKSJ-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Ext-RKSJ-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Ext-RKSJ-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Ext-RKSJ-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Ext-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Ext-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Hankaku",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Hankaku"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Hiragana",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Hiragana"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Hojo-EUC-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Hojo-EUC-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Hojo-EUC-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Hojo-EUC-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Hojo-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Hojo-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Hojo-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Hojo-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Katakana",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Katakana"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/NWP-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/NWP-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/NWP-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/NWP-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/RKSJ-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/RKSJ-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/RKSJ-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/RKSJ-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/Roman",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/Roman"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UCS2-90ms-RKSJ",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UCS2-90ms-RKSJ"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UCS2-90pv-RKSJ",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UCS2-90pv-RKSJ"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniHojo-UCS2-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniHojo-UCS2-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniHojo-UCS2-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniHojo-UCS2-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniHojo-UTF16-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniHojo-UTF16-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniHojo-UTF16-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniHojo-UTF16-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniHojo-UTF32-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniHojo-UTF32-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniHojo-UTF32-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniHojo-UTF32-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniHojo-UTF8-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniHojo-UTF8-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniHojo-UTF8-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniHojo-UTF8-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJIS-UCS2-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJIS-UCS2-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJIS-UCS2-HW-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJIS-UCS2-HW-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJIS-UCS2-HW-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJIS-UCS2-HW-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJIS-UCS2-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJIS-UCS2-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJIS-UTF16-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJIS-UTF16-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJIS-UTF16-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJIS-UTF16-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJIS-UTF32-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJIS-UTF32-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJIS-UTF32-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJIS-UTF32-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJIS-UTF8-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJIS-UTF8-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJIS-UTF8-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJIS-UTF8-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJIS2004-UTF16-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJIS2004-UTF16-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJIS2004-UTF16-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJIS2004-UTF16-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJIS2004-UTF32-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJIS2004-UTF32-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJIS2004-UTF32-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJIS2004-UTF32-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJIS2004-UTF8-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJIS2004-UTF8-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJIS2004-UTF8-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJIS2004-UTF8-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJISPro-UCS2-HW-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJISPro-UCS2-HW-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJISPro-UCS2-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJISPro-UCS2-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJISPro-UTF8-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJISPro-UTF8-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJISX0213-UTF32-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJISX0213-UTF32-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJISX0213-UTF32-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJISX0213-UTF32-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJISX02132004-UTF32-H",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJISX02132004-UTF32-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/UniJISX02132004-UTF32-V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/UniJISX02132004-UTF32-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/V",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/V"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan1/WP-Symbol",
+    "virtual": "/poppler-data/cMap/Adobe-Japan1/WP-Symbol"
+  },
+  {
+    "path": "data/cMap/Adobe-Japan2/Adobe-Japan2-0",
+    "virtual": "/poppler-data/cMap/Adobe-Japan2/Adobe-Japan2-0"
+  },
+  {
+    "path": "data/cMap/Adobe-KR/Adobe-KR-0",
+    "virtual": "/poppler-data/cMap/Adobe-KR/Adobe-KR-0"
+  },
+  {
+    "path": "data/cMap/Adobe-KR/Adobe-KR-1",
+    "virtual": "/poppler-data/cMap/Adobe-KR/Adobe-KR-1"
+  },
+  {
+    "path": "data/cMap/Adobe-KR/Adobe-KR-2",
+    "virtual": "/poppler-data/cMap/Adobe-KR/Adobe-KR-2"
+  },
+  {
+    "path": "data/cMap/Adobe-KR/Adobe-KR-3",
+    "virtual": "/poppler-data/cMap/Adobe-KR/Adobe-KR-3"
+  },
+  {
+    "path": "data/cMap/Adobe-KR/Adobe-KR-4",
+    "virtual": "/poppler-data/cMap/Adobe-KR/Adobe-KR-4"
+  },
+  {
+    "path": "data/cMap/Adobe-KR/Adobe-KR-5",
+    "virtual": "/poppler-data/cMap/Adobe-KR/Adobe-KR-5"
+  },
+  {
+    "path": "data/cMap/Adobe-KR/Adobe-KR-6",
+    "virtual": "/poppler-data/cMap/Adobe-KR/Adobe-KR-6"
+  },
+  {
+    "path": "data/cMap/Adobe-KR/Adobe-KR-7",
+    "virtual": "/poppler-data/cMap/Adobe-KR/Adobe-KR-7"
+  },
+  {
+    "path": "data/cMap/Adobe-KR/Adobe-KR-8",
+    "virtual": "/poppler-data/cMap/Adobe-KR/Adobe-KR-8"
+  },
+  {
+    "path": "data/cMap/Adobe-KR/Adobe-KR-9",
+    "virtual": "/poppler-data/cMap/Adobe-KR/Adobe-KR-9"
+  },
+  {
+    "path": "data/cMap/Adobe-KR/Adobe-KR-UCS2",
+    "virtual": "/poppler-data/cMap/Adobe-KR/Adobe-KR-UCS2"
+  },
+  {
+    "path": "data/cMap/Adobe-KR/UniAKR-UTF16-H",
+    "virtual": "/poppler-data/cMap/Adobe-KR/UniAKR-UTF16-H"
+  },
+  {
+    "path": "data/cMap/Adobe-KR/UniAKR-UTF32-H",
+    "virtual": "/poppler-data/cMap/Adobe-KR/UniAKR-UTF32-H"
+  },
+  {
+    "path": "data/cMap/Adobe-KR/UniAKR-UTF8-H",
+    "virtual": "/poppler-data/cMap/Adobe-KR/UniAKR-UTF8-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/Adobe-Korea1-0",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/Adobe-Korea1-0"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/Adobe-Korea1-1",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/Adobe-Korea1-1"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/Adobe-Korea1-2",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/Adobe-Korea1-2"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/Adobe-Korea1-H-CID",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/Adobe-Korea1-H-CID"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/Adobe-Korea1-H-Host",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/Adobe-Korea1-H-Host"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/Adobe-Korea1-H-Mac",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/Adobe-Korea1-H-Mac"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/Adobe-Korea1-KSCms-UHC",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/Adobe-Korea1-KSCms-UHC"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/Adobe-Korea1-KSCpc-EUC",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/Adobe-Korea1-KSCpc-EUC"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/Adobe-Korea1-UCS2",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/Adobe-Korea1-UCS2"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/KSC-EUC-H",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/KSC-EUC-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/KSC-EUC-V",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/KSC-EUC-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/KSC-H",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/KSC-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/KSC-Johab-H",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/KSC-Johab-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/KSC-Johab-V",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/KSC-Johab-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/KSC-V",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/KSC-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/KSCms-UHC-H",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/KSCms-UHC-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/KSCms-UHC-HW-H",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/KSCms-UHC-HW-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/KSCms-UHC-HW-V",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/KSCms-UHC-HW-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/KSCms-UHC-UCS2",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/KSCms-UHC-UCS2"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/KSCms-UHC-V",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/KSCms-UHC-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/KSCpc-EUC-H",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/KSCpc-EUC-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/KSCpc-EUC-UCS2",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/KSCpc-EUC-UCS2"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/KSCpc-EUC-UCS2C",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/KSCpc-EUC-UCS2C"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/KSCpc-EUC-V",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/KSCpc-EUC-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/UCS2-KSCms-UHC",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/UCS2-KSCms-UHC"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/UCS2-KSCpc-EUC",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/UCS2-KSCpc-EUC"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/UniKS-UCS2-H",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/UniKS-UCS2-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/UniKS-UCS2-V",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/UniKS-UCS2-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/UniKS-UTF16-H",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/UniKS-UTF16-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/UniKS-UTF16-V",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/UniKS-UTF16-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/UniKS-UTF32-H",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/UniKS-UTF32-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/UniKS-UTF32-V",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/UniKS-UTF32-V"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/UniKS-UTF8-H",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/UniKS-UTF8-H"
+  },
+  {
+    "path": "data/cMap/Adobe-Korea1/UniKS-UTF8-V",
+    "virtual": "/poppler-data/cMap/Adobe-Korea1/UniKS-UTF8-V"
+  },
+  {
+    "path": "data/cidToUnicode/Adobe-CNS1",
+    "virtual": "/poppler-data/cidToUnicode/Adobe-CNS1"
+  },
+  {
+    "path": "data/cidToUnicode/Adobe-GB1",
+    "virtual": "/poppler-data/cidToUnicode/Adobe-GB1"
+  },
+  {
+    "path": "data/cidToUnicode/Adobe-Japan1",
+    "virtual": "/poppler-data/cidToUnicode/Adobe-Japan1"
+  },
+  {
+    "path": "data/cidToUnicode/Adobe-Korea1",
+    "virtual": "/poppler-data/cidToUnicode/Adobe-Korea1"
+  },
+  {
+    "path": "data/nameToUnicode/Bulgarian",
+    "virtual": "/poppler-data/nameToUnicode/Bulgarian"
+  },
+  {
+    "path": "data/nameToUnicode/Greek",
+    "virtual": "/poppler-data/nameToUnicode/Greek"
+  },
+  {
+    "path": "data/nameToUnicode/Thai",
+    "virtual": "/poppler-data/nameToUnicode/Thai"
+  },
+  {
+    "path": "data/unicodeMap/Big5",
+    "virtual": "/poppler-data/unicodeMap/Big5"
+  },
+  {
+    "path": "data/unicodeMap/Big5ascii",
+    "virtual": "/poppler-data/unicodeMap/Big5ascii"
+  },
+  {
+    "path": "data/unicodeMap/EUC-CN",
+    "virtual": "/poppler-data/unicodeMap/EUC-CN"
+  },
+  {
+    "path": "data/unicodeMap/EUC-JP",
+    "virtual": "/poppler-data/unicodeMap/EUC-JP"
+  },
+  {
+    "path": "data/unicodeMap/GBK",
+    "virtual": "/poppler-data/unicodeMap/GBK"
+  },
+  {
+    "path": "data/unicodeMap/ISO-2022-CN",
+    "virtual": "/poppler-data/unicodeMap/ISO-2022-CN"
+  },
+  {
+    "path": "data/unicodeMap/ISO-2022-JP",
+    "virtual": "/poppler-data/unicodeMap/ISO-2022-JP"
+  },
+  {
+    "path": "data/unicodeMap/ISO-2022-KR",
+    "virtual": "/poppler-data/unicodeMap/ISO-2022-KR"
+  },
+  {
+    "path": "data/unicodeMap/ISO-8859-6",
+    "virtual": "/poppler-data/unicodeMap/ISO-8859-6"
+  },
+  {
+    "path": "data/unicodeMap/ISO-8859-7",
+    "virtual": "/poppler-data/unicodeMap/ISO-8859-7"
+  },
+  {
+    "path": "data/unicodeMap/ISO-8859-8",
+    "virtual": "/poppler-data/unicodeMap/ISO-8859-8"
+  },
+  {
+    "path": "data/unicodeMap/ISO-8859-9",
+    "virtual": "/poppler-data/unicodeMap/ISO-8859-9"
+  },
+  {
+    "path": "data/unicodeMap/KOI8-R",
+    "virtual": "/poppler-data/unicodeMap/KOI8-R"
+  },
+  {
+    "path": "data/unicodeMap/Latin2",
+    "virtual": "/poppler-data/unicodeMap/Latin2"
+  },
+  {
+    "path": "data/unicodeMap/Shift-JIS",
+    "virtual": "/poppler-data/unicodeMap/Shift-JIS"
+  },
+  {
+    "path": "data/unicodeMap/TIS-620",
+    "virtual": "/poppler-data/unicodeMap/TIS-620"
+  },
+  {
+    "path": "data/unicodeMap/Windows-1255",
+    "virtual": "/poppler-data/unicodeMap/Windows-1255"
+  },
+  {
+    "path": "fonts/NimbusMonoPS-Regular.otf",
+    "virtual": "/fonts/NimbusMonoPS-Regular.otf"
+  },
+  {
+    "path": "fonts/NimbusMonoPS-Bold.otf",
+    "virtual": "/fonts/NimbusMonoPS-Bold.otf"
+  },
+  {
+    "path": "fonts/NimbusMonoPS-BoldItalic.otf",
+    "virtual": "/fonts/NimbusMonoPS-BoldItalic.otf"
+  },
+  {
+    "path": "fonts/NimbusMonoPS-Italic.otf",
+    "virtual": "/fonts/NimbusMonoPS-Italic.otf"
+  },
+  {
+    "path": "fonts/NimbusSans-Regular.otf",
+    "virtual": "/fonts/NimbusSans-Regular.otf"
+  },
+  {
+    "path": "fonts/NimbusSans-Bold.otf",
+    "virtual": "/fonts/NimbusSans-Bold.otf"
+  },
+  {
+    "path": "fonts/NimbusSans-BoldItalic.otf",
+    "virtual": "/fonts/NimbusSans-BoldItalic.otf"
+  },
+  {
+    "path": "fonts/NimbusSans-Italic.otf",
+    "virtual": "/fonts/NimbusSans-Italic.otf"
+  },
+  {
+    "path": "fonts/StandardSymbolsPS.otf",
+    "virtual": "/fonts/StandardSymbolsPS.otf"
+  },
+  {
+    "path": "fonts/NimbusRoman-Bold.otf",
+    "virtual": "/fonts/NimbusRoman-Bold.otf"
+  },
+  {
+    "path": "fonts/NimbusRoman-BoldItalic.otf",
+    "virtual": "/fonts/NimbusRoman-BoldItalic.otf"
+  },
+  {
+    "path": "fonts/NimbusRoman-Italic.otf",
+    "virtual": "/fonts/NimbusRoman-Italic.otf"
+  },
+  {
+    "path": "fonts/NimbusRoman-Regular.otf",
+    "virtual": "/fonts/NimbusRoman-Regular.otf"
+  },
+  {
+    "path": "fonts/D050000L.otf",
+    "virtual": "/fonts/D050000L.otf"
+  }
+]

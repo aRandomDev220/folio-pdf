@@ -1,0 +1,42 @@
+{
+  "poppler": "26.10.0",
+  "emscripten": "4.0.23",
+  "backend": "Splash",
+  "codecs": [
+    "JPEG",
+    "JPEG2000",
+    "JBIG2",
+    "CCITT",
+    "Flate"
+  ],
+  "colorManagement": "Little CMS 2.17",
+  "patches": [
+    "engine/patches/poppler-libcxx.patch"
+  ],
+  "sources": {
+    "emsdk-4.0.23": {
+      "url": "https://codeload.github.com/emscripten-core/emsdk/tar.gz/refs/tags/4.0.23",
+      "sha256": "a91a4c1f42dbb0345faac093161e27d43e9b6964840d8c8d80976ab8d3eaf2d3"
+    },
+    "openjpeg-2.5.4": {
+      "url": "https://codeload.github.com/uclouvain/openjpeg/tar.gz/refs/tags/v2.5.4",
+      "sha256": "a695fbe19c0165f295a8531b1e4e855cd94d0875d2f88ec4b61080677e27188a"
+    },
+    "lcms-2.17": {
+      "url": "https://codeload.github.com/mm2/Little-CMS/tar.gz/refs/tags/lcms2.17",
+      "sha256": "6e6f6411db50e85ae8ff7777f01b2da0614aac13b7b9fcbea66dc56a1bc71418"
+    },
+    "poppler-26.10.0": {
+      "url": "https://poppler.freedesktop.org/poppler-26.10.0.tar.xz",
+      "sha256": "6792cb7c69205007ad87d2e936cecc5b3a31fac29ab54ffc3175fdb6b2a6ce35"
+    },
+    "poppler-data-0.4.12": {
+      "url": "https://poppler.freedesktop.org/poppler-data-0.4.12.tar.gz",
+      "sha256": "c835b640a40ce357e1b83666aabd95edffa24ddddd49b8daff63adb851cdab74"
+    },
+    "urw-fonts-20200910": {
+      "url": "https://codeload.github.com/ArtifexSoftware/urw-base35-fonts/tar.gz/refs/tags/20200910",
+      "sha256": "e0d9b7f11885fdfdc4987f06b2aa0565ad2a4af52b22e5ebf79e1a98abd0ae2f"
+    }
+  }
+}

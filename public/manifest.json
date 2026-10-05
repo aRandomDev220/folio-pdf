@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Folio — a quieter PDF viewer",
+  "version": "0.1.0",
+  "description": "A minimalist, local-first PDF viewer with Poppler-powered rendering, virtualized pages, and a bounded bitmap cache.",
+  "minimum_chrome_version": "120",
+  "permissions": ["storage", "contextMenus", "declarativeNetRequest", "webNavigation", "tabs"],
+  "host_permissions": ["http://*/*", "https://*/*", "file:///*"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "action": { "default_title": "Open Folio PDF viewer" },
+  "icons": { "16": "icons/16.png", "32": "icons/32.png", "48": "icons/48.png", "128": "icons/128.png" },
+  "content_security_policy": { "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';" },
+  "mime_types_handler": { "application/pdf": { "handler_url": "viewer.html", "can_embed": true } },
+  "web_accessible_resources": [{ "resources": ["viewer.html", "assets/*", "engine/*", "icon.svg"], "matches": ["http://*/*", "https://*/*", "file:///*"] }]
+}

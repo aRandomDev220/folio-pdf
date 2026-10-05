@@ -1,0 +1,8 @@
+{
+  "emsdk-4.0.23": "a91a4c1f42dbb0345faac093161e27d43e9b6964840d8c8d80976ab8d3eaf2d3",
+  "openjpeg-2.5.4": "a695fbe19c0165f295a8531b1e4e855cd94d0875d2f88ec4b61080677e27188a",
+  "lcms-2.17": "6e6f6411db50e85ae8ff7777f01b2da0614aac13b7b9fcbea66dc56a1bc71418",
+  "poppler-26.10.0": "6792cb7c69205007ad87d2e936cecc5b3a31fac29ab54ffc3175fdb6b2a6ce35",
+  "poppler-data-0.4.12": "c835b640a40ce357e1b83666aabd95edffa24ddddd49b8daff63adb851cdab74",
+  "urw-fonts-20200910": "e0d9b7f11885fdfdc4987f06b2aa0565ad2a4af52b22e5ebf79e1a98abd0ae2f"
+}
