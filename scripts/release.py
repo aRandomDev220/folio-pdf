@@ -31,7 +31,7 @@ for name, path in dependencies.items():
 prefix = 'folio-' + version + '-source'
 with tarfile.open(out / (prefix + '.tar.gz'), 'w:gz') as source:
     for path in root.iterdir():
-        if path.name in ['.build', 'node_modules', 'dist', 'artifacts', 'test-results', 'playwright-report', 'releases', '.git']:
+        if path.name in ['.build', '.opencode', 'node_modules', 'dist', 'artifacts', 'test-results', 'playwright-report', 'releases', '.git']:
             continue
         source.add(path, arcname=prefix + '/' + path.name)
     for name, path in dependencies.items():

@@ -21,7 +21,8 @@ The compiled build is generated locally in `dist/`. From a fresh clone, run `npm
 - Lazy thumbnails and document bookmarks.
 - Selectable text, incremental text search, internal links, and external links.
 - Original-byte download. Printing opens the original PDF in a separate native-viewer tab; use its toolbar or Ctrl+P there.
-- Light/dark themes and an automatic-opening switch in the More menu.
+- Neutral black theme by default, with a saved monochrome light-theme option and an automatic-opening switch in the More menu.
+- The Folio home button returns to the file picker in place and releases the current document’s rendering resources.
 - Clear invalid-document and unavailable-source states, with native-viewer fallback for remotely opened PDFs.
 
 Everything is processed on the device. Documents are not uploaded, and there is no analytics service or remote executable code. Search uses the PDF’s existing text; scanned images without a text layer are not OCR’d.
@@ -55,10 +56,11 @@ Targets desktop Chromium browsers with Manifest V3 support, version 120 or newer
 
 | Browser / path | Result |
 | --- | --- |
-| Chrome for Testing 151.0.7922.34, packaged extension | Passed: MV3 CSP, local loading, takeover, original URL preservation, POST streams, embedded frames, print handoff, native fallback, attachments |
+| Chrome for Testing 151.0.7922.34, packaged extension | Passed: MV3 CSP, local loading, takeover, original URL preservation, POST streams, embedded frames, home/reset and reopening, print handoff, native fallback, attachments |
 | Legacy path simulated in an isolated Chromium 151 profile | Passed: actual DNR redirects, signed queries, extensionless responses, attachments, disable switch |
 | Brave Origin 154.1.96.61, viewer as a local development page | Passed: rendering, JPEG/JPEG2000, search, bookmarks, rotation, passwords, virtualization, large-image controls |
 | Brave unpacked extension via automated CLI loading | Unverified: installed build did not load the extension through automation flags |
+| Helium 0.18.3.1 (Chromium 154.0.8037.97), packaged extension and development viewer | Passed all four focused home/theme tests; full run passed 17/19. Signed-query takeover and simulated legacy navigation tests aborted with `net::ERR_ABORTED`; both failures also reproduced with the original green-theme package. |
 | Edge, Opera, Vivaldi; Windows/macOS | Not tested in this environment |
 
 ## Performance architecture

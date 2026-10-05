@@ -5,3 +5,4 @@ test-results/
 playwright-report/
 artifacts/
 releases/
+.opencode/omnirush/

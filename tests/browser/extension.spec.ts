@@ -22,7 +22,7 @@ test.beforeAll(async () => {
     response.writeHead(200, { 'content-type': 'application/pdf', 'content-length': pdf.length, 'cache-control': 'no-store' }); response.end(pdf);
   });
   await new Promise<void>((done) => server.listen(0, '127.0.0.1', done));
-  origin = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+  origin = `http://localhost:${(server.address() as { port: number }).port}`;
   const path = resolve('dist');
   context = await chromium.launchPersistentContext('', {
     executablePath, headless: true, viewport: { width: 1440, height: 1000 },
@@ -95,6 +95,32 @@ test('native stream handler takes over local file URLs without manual file permi
   const frame = await viewerFrame(page);
   await expect(frame.locator('.pdf-page.rendered').first()).toBeVisible();
   await expect(page).toHaveURL(url); await page.close();
+});
+
+test('Folio home returns a streamed PDF to welcome without navigating and can open another file', async () => {
+  const page = await context.newPage();
+  const errors: string[] = []; page.on('pageerror', (error) => errors.push(error.message));
+  await page.goto(origin + '/reading.pdf');
+  const frame = await viewerFrame(page);
+  await expect(frame.locator('.pdf-page.rendered').first()).toBeVisible();
+  const url = page.url(), frameUrl = frame.url();
+  const navigations: string[] = [];
+  page.on('framenavigated', (navigated) => navigations.push(navigated.url()));
+  await frame.getByLabel('Folio home', { exact: true }).click();
+  await expect(frame.getByRole('heading', { name: /Your documents/ })).toBeVisible();
+  await expect(frame.locator('#viewport')).toBeHidden();
+  await expect(frame.locator('.pdf-page')).toHaveCount(0);
+  await expect(page).toHaveURL(url); expect(frame.url()).toBe(frameUrl);
+  const chooser = page.waitForEvent('filechooser');
+  await frame.getByRole('button', { name: /Open a PDF/ }).click();
+  await (await chooser).setFiles({ name: 'reopened.pdf', mimeType: 'application/pdf', buffer: makePdf(2) });
+  await expect(frame.locator('.pdf-page.rendered').first()).toBeVisible();
+  await expect(frame.locator('#page-count')).toHaveText('2');
+  await frame.getByLabel('Folio home', { exact: true }).focus();
+  await page.keyboard.press('Space');
+  await expect(frame.getByRole('heading', { name: /Your documents/ })).toBeVisible();
+  expect(navigations).toEqual([]); expect(errors).toEqual([]);
+  await page.close();
 });
 
 test('native stream handler also renders embedded PDF frames', async () => {

@@ -15,7 +15,7 @@ test('legacy network rules work when the MIME-handler API is unavailable', async
     response.end(pdf);
   });
   await new Promise<void>((done) => server.listen(0, '127.0.0.1', done));
-  const origin = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+  const origin = `http://localhost:${(server.address() as { port: number }).port}`;
   const extension = resolve('dist');
   const context = await chromium.launchPersistentContext('', { executablePath, headless: true, args: [`--disable-extensions-except=${extension}`, `--load-extension=${extension}`] });
   try {
@@ -37,6 +37,13 @@ test('legacy network rules work when the MIME-handler API is unavailable', async
       await expect(page.locator('.pdf-page.rendered').first()).toBeVisible();
       await expect(page.locator('#page-count')).toHaveText('3');
     }
+    const url = page.url();
+    await page.getByLabel('Folio home', { exact: true }).click();
+    await expect(page.getByRole('heading', { name: /Your documents/ })).toBeVisible();
+    await expect(page).toHaveURL(url);
+    await page.locator('#file-input').setInputFiles({ name: 'after-home.pdf', mimeType: 'application/pdf', buffer: makePdf(2) });
+    await expect(page.locator('.pdf-page.rendered').first()).toBeVisible();
+    await expect(page.locator('#page-count')).toHaveText('2');
     const download = page.waitForEvent('download');
     await page.goto(origin + '/download.pdf').catch(() => {});
     expect((await download).suggestedFilename()).toBe('original.pdf');

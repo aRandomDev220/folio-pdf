@@ -14,7 +14,7 @@ const formatSize = (bytes: number) => bytes >= 1_048_576 ? `${(bytes / 1_048_576
 $('#app').innerHTML = `
   <header class="toolbar">
     <div class="toolbar-left">
-      <a class="brand" href="viewer.html" aria-label="Folio home"><span class="brand-mark">${icon('file', 19)}</span>folio<span class="brand-dot">.</span></a>
+      <button id="home" class="brand" type="button" aria-label="Folio home"><span class="brand-mark">${icon('file', 19)}</span>folio<span class="brand-dot">.</span></button>
       <span class="toolbar-divider document-only" hidden></span>
       <span class="document-only" hidden>${button('sidebar-toggle', 'sidebar', 'Toggle sidebar (S)')}</span>
       <div class="document-title document-only" hidden><strong id="filename"></strong><span id="file-detail"></span></div>
@@ -114,8 +114,8 @@ class Viewer {
 
   constructor() {
     let theme = '';
-    try { theme = localStorage.getItem('folio-theme') || ''; } catch { /* Restricted storage uses OS theme. */ }
-    this.setTheme(theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+    try { theme = localStorage.getItem('folio-theme') || ''; } catch { /* Restricted storage uses the default black theme. */ }
+    this.setTheme(theme === 'light' ? 'light' : 'dark');
     this.events();
     void this.settings();
     void this.initialSource();
@@ -125,6 +125,7 @@ class Viewer {
   private firstPageMilliseconds = 0;
 
   private events() {
+    $('#home').onclick = () => this.home();
     const pick = () => $('#file-input').click();
     ['choose-file', 'open-file', 'state-open'].forEach((id) => $('#' + id).addEventListener('click', pick));
     $('#file-input').addEventListener('change', (event) => {
@@ -222,6 +223,7 @@ class Viewer {
     } catch { this.toast('Browser settings could not be read.'); }
   }
   private async initialSource() {
+    const epoch = this.epoch;
     const hash = location.hash;
     const legacyUrl = hash.startsWith('#source=') ? hash.slice(8) : '';
     if (legacyUrl) { await this.fetchSource(legacyUrl); return; }
@@ -229,6 +231,7 @@ class Viewer {
     if (!handler) return;
     let stream;
     try { stream = await handler.getStreamInfo(); } catch { return; } // Directly opened viewer has no stream.
+    if (epoch !== this.epoch) return;
     this.sourceUrl = stream.originalUrl; this.streamContext = true;
     // Copies opened for printing must reach the built-in handler even while
     // Folio is the registered MIME handler. Consume once before falling back.
@@ -238,6 +241,7 @@ class Viewer {
       const marker = (await chrome.storage.session.get(nativeKey))[nativeKey];
       nativeCopy = typeof marker === 'number' && Date.now() - marker < 120000;
     } catch { /* Session storage is not needed to open ordinary documents. */ }
+    if (epoch !== this.epoch) return;
     if (nativeCopy) {
       try {
         await fetch(stream.streamUrl).then((response) => response.arrayBuffer());
@@ -276,11 +280,36 @@ class Viewer {
   private endSession() {
     this.epoch++; this.searchEpoch++;
     this.scheduler?.stop(); this.engine?.dispose(); this.engine = undefined; this.info = undefined;
+    this.scheduler = undefined; this.layout = undefined;
     this.cache.clear(); this.words.clear(); this.links.clear();
     for (const view of this.views.values()) { view.canvas.width = 0; view.canvas.height = 0; view.element.remove(); }
     this.views.clear(); this.thumbnailViews.clear(); $('#thumbnails').replaceChildren();
     clearTimeout(this.zoomTimer); clearTimeout(this.searchTimer); cancelAnimationFrame(this.frame); this.frame = 0;
     this.sessionErrors.clear(); this.firstPaint = false;
+  }
+  private home() {
+    // MIME-handler frames cannot navigate to another extension document. Keep
+    // the same document and tear down the PDF session instead of following a URL.
+    this.downloadAbort?.abort(); this.downloadAbort = undefined;
+    this.endSession();
+    this.blob = undefined; this.title = ''; this.sourceUrl = ''; this.streamContext = false;
+    this.rotation = 0; this.scale = 1; this.zoomMode = 'width'; this.currentPage = 1;
+    this.query = ''; this.matches = []; this.matchIndex = -1; this.searchPage = 1; this.searchComplete = false;
+    clearTimeout(this.toastTimer);
+    $<HTMLDialogElement>('#password-dialog').close();
+    $<HTMLInputElement>('#password').value = ''; $('#password-error').textContent = '';
+    $<HTMLInputElement>('#find-input').value = ''; $('#find-count').textContent = '';
+    for (const id of ['viewport', 'sidebar', 'state', 'statusbar', 'find-bar', 'more-menu', 'toast', 'drag-overlay']) $('#' + id).hidden = true;
+    $('#welcome').hidden = false;
+    document.querySelectorAll<HTMLElement>('.document-only').forEach((element) => element.hidden = true);
+    document.querySelectorAll<HTMLButtonElement>('[data-needs-document]').forEach((element) => element.disabled = true);
+    $<HTMLButtonElement>('#native').disabled = true;
+    $('#sidebar-toggle').setAttribute('aria-pressed', 'false'); $('#more-toggle').setAttribute('aria-expanded', 'false');
+    $('#filename').textContent = ''; $('#filename').removeAttribute('title'); $('#file-detail').textContent = '';
+    $<HTMLInputElement>('#page-number').value = '1'; $<HTMLInputElement>('#page-number').removeAttribute('max'); $('#page-count').textContent = '0';
+    $('#pages').style.height = ''; $('#pages').style.minWidth = ''; $('#viewport').scrollTop = 0;
+    $('#outline').replaceChildren(); this.sidebarTab('pages');
+    document.title = 'Folio — PDF viewer'; $('#choose-file').focus();
   }
   private async open(blob: Blob, title: string, password = '') {
     this.downloadAbort?.abort(); this.downloadAbort = undefined;
@@ -653,6 +682,8 @@ class Viewer {
     if (modifier && event.key.toLowerCase() === 'p') { event.preventDefault(); void this.print(); return; }
     if (modifier && event.key.toLowerCase() === 's') { event.preventDefault(); this.download(); return; }
     if (input) return;
+    // Let Space activate focused controls rather than scrolling the PDF.
+    if (event.key === ' ' && (event.target as Element).closest('button, a')) return;
     if (event.key === '+' || event.key === '=') { event.preventDefault(); $('#zoom-in').click(); }
     else if (event.key === '-') { event.preventDefault(); $('#zoom-out').click(); }
     else if (event.key.toLowerCase() === 'r') this.rotate();
