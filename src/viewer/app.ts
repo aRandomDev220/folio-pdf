@@ -651,13 +651,13 @@ class Viewer {
     // Printing uses the original PDF in the browser's print engine. Preparing
     // canvases for every page would defeat our bounded-memory rendering policy.
     const url = URL.createObjectURL(new Blob([this.blob], { type: 'application/pdf' }));
+    const printUrl = new URL('print.html', document.baseURI);
+    printUrl.hash = new URLSearchParams({ source: url, title: this.title }).toString();
     try {
-      if (inExtension()) {
-        if (mimeHandler()) await chrome.storage.session.set({ ['native-copy:' + url]: Date.now() });
-        await chrome.tabs.create({ url });
-      } else window.open(url, '_blank', 'noopener');
-      this.toast('Print from the browser viewer’s toolbar, or press Ctrl+P there.');
-    } catch { this.toast('The print viewer could not be opened. Download the PDF to print it.'); }
+      if (inExtension()) await chrome.tabs.create({ url: printUrl.href });
+      else window.open(printUrl.href, '_blank', 'noopener');
+      this.toast('Opening the print dialog…');
+    } catch { this.toast('The print dialog could not be opened. Download the PDF to print it.'); }
     setTimeout(() => URL.revokeObjectURL(url), 120000);
   }
   private async native() {

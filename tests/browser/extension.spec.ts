@@ -132,7 +132,7 @@ test('native stream handler also renders embedded PDF frames', async () => {
   await page.close();
 });
 
-test('print opens an original-byte PDF in the native viewer without a MIME-handler loop', async () => {
+test('print prepares original PDF bytes and requests printing without a MIME-handler loop', async () => {
   const page = await context.newPage();
   await page.goto(`chrome-extension://${extensionId}/viewer.html`);
   await page.locator('#file-input').setInputFiles({ name: 'print.pdf', mimeType: 'application/pdf', buffer: pdf });
@@ -141,10 +141,15 @@ test('print opens an original-byte PDF in the native viewer without a MIME-handl
   const created = context.waitForEvent('page');
   await page.getByRole('button', { name: 'Print document' }).click();
   const printPage = await created;
+  await expect(printPage).toHaveURL(new RegExp(`^chrome-extension://${extensionId}/print\\.html#`));
+  await expect(printPage.locator('#print-status')).toHaveAttribute('data-state', 'ready');
+  await expect(printPage.locator('#print-again')).toBeEnabled();
   await expect.poll(async () => {
     for (const frame of printPage.frames()) if (await frameCount(frame, 'pdf-viewer')) return true;
     return false;
   }).toBe(true);
+  const bytes = await printPage.locator('iframe').evaluate(async (frame: HTMLIFrameElement) => Array.from(new Uint8Array(await (await fetch(frame.src)).arrayBuffer())));
+  expect(Buffer.from(bytes)).toEqual(pdf);
   await expect(page.locator('.pdf-page.rendered').first()).toBeVisible();
   await printPage.close(); await page.close();
 });

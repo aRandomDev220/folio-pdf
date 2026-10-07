@@ -1,0 +1,14 @@
+@import url('../viewer/tokens.css');
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { display: flex; flex-direction: column; background: var(--canvas); color: var(--text); font: 12px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+header { display: flex; align-items: center; gap: 12px; height: 40px; padding: 0 12px; flex-shrink: 0; background: var(--surface); border-bottom: 1px solid var(--line); }
+header strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 550; }
+#print-status { color: var(--muted); margin-left: auto; }
+button { flex-shrink: 0; border: 1px solid var(--line); border-radius: 5px; padding: 5px 10px; background: var(--hover); color: var(--text); font: inherit; cursor: pointer; }
+button:disabled { opacity: .4; cursor: default; }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+main { display: flex; flex: 1; min-height: 0; }
+iframe { border: 0; width: 100%; height: 100%; }
+@media (max-width: 620px) { header { flex-wrap: wrap; height: auto; min-height: 40px; padding: 6px 12px; } #print-status { order: 1; width: 100%; } button { margin-left: auto; } }

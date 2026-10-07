@@ -21,7 +21,7 @@ The compiled build is generated locally in `dist/`. From a fresh clone, run `npm
 - Compact 40px toolbar to leave more vertical space for the document.
 - Lazy thumbnails and document bookmarks.
 - Selectable text, incremental text search, internal links, and external links.
-- Original-byte download. Printing opens the original PDF in a separate native-viewer tab; use its toolbar or Ctrl+P there.
+- Original-byte download. Printing opens the browser’s print dialog automatically from a dedicated print tab, using the original PDF bytes. The reader stays open; the print tab also provides a Print again button.
 - Neutral black theme by default, with a saved monochrome light-theme option and an automatic-opening switch in the More menu.
 - The Folio home button returns to the file picker in place and releases the current document’s rendering resources.
 - Clear invalid-document and unavailable-source states, with native-viewer fallback for remotely opened PDFs.
@@ -36,7 +36,7 @@ Everything is processed on the device. Documents are not uploaded, and there is 
 | Ctrl/Cmd+F | Find text |
 | Enter / Shift+Enter in search | Next / previous match |
 | Ctrl/Cmd+S | Download original PDF |
-| Ctrl/Cmd+P | Open native print viewer |
+| Ctrl/Cmd+P | Open print dialog |
 | + / − | Zoom |
 | Ctrl+wheel | Zoom |
 | R | Rotate clockwise |
@@ -57,11 +57,11 @@ Targets desktop Chromium browsers with Manifest V3 support, version 120 or newer
 
 | Browser / path | Result |
 | --- | --- |
-| Chrome for Testing 151.0.7922.34, packaged extension | Passed: MV3 CSP, local loading, takeover, original URL preservation, POST streams, embedded frames, home/reset and reopening, print handoff, native fallback, attachments |
+| Chrome for Testing 151.0.7922.34, packaged extension | Passed: MV3 CSP, local loading, takeover, original URL preservation, POST streams, embedded frames, home/reset and reopening, automatic print dialog and cancel/retry, native fallback, attachments |
 | Legacy path simulated in an isolated Chromium 151 profile | Passed: actual DNR redirects, signed queries, extensionless responses, attachments, disable switch |
 | Brave Origin 154.1.96.61, viewer as a local development page | Passed: rendering, JPEG/JPEG2000, search, bookmarks, rotation, passwords, virtualization, large-image controls |
 | Brave unpacked extension via automated CLI loading | Unverified: installed build did not load the extension through automation flags |
-| Helium 0.18.3.1 (Chromium 154.0.8037.97), packaged extension and development viewer | Passed all four focused home/theme tests; full run passed 17/19. Signed-query takeover and simulated legacy navigation tests aborted with `net::ERR_ABORTED`; both failures also reproduced with the original green-theme package. |
+| Helium 0.18.3.1 (Chromium 154.0.8037.97), packaged extension and development viewer | Passed all four focused home/theme tests and all three headed print-dialog checks, including cancel/retry and printing with automatic takeover disabled. An earlier full run passed 17/19; signed-query takeover and simulated legacy navigation tests aborted with `net::ERR_ABORTED`, also reproduced with the original green-theme package. |
 | Edge, Opera, Vivaldi; Windows/macOS | Not tested in this environment |
 
 ## Performance architecture
@@ -122,6 +122,8 @@ npm run test:browser        # Real worker rendering and packaged-extension check
 
 Set `FOLIO_BROWSER=/path/to/chromium` to test with a specific executable. If this machine’s existing Chromium test binary is available, the test configuration reuses it. The legacy compatibility test deliberately removes the MIME-handler API from its isolated worker context; it does not modify a real browser profile. Codec tests explicitly skip when their generated fixtures are missing.
 
+`tests/browser/printing.spec.ts` uses an isolated headed browser to verify that menu printing and Ctrl/Cmd+P open the actual print-preview dialog, including automatic takeover disabled and cancel/retry. On Linux it needs a display (or Xvfb) and skips when `DISPLAY` is absent. These checks do not submit a print job.
+
 No lint command is configured. The implementation is checked by strict TypeScript, focused unit tests and browser integration tests.
 
 ### Release
@@ -138,6 +140,7 @@ Creates the extension ZIP and corresponding source TAR.GZ in `releases/`. Keep b
 - `scripts/build-engine.py` — reproducible local toolchain and native dependency build.
 - `src/engine/` — worker transport and resource ownership.
 - `src/viewer/` — UI, virtual page layout, render scheduler and bounded caches.
+- `src/print/` — original-byte print copy, native PDF handoff and automatic print dialog.
 - `src/extension/` — MIME-handler capability selection, legacy interception and fallback.
 - `public/` — packaged engine, manifest, fonts, maps and third-party notices.
 - `tests/` — deterministic PDF fixtures and meaningful integration checks.
