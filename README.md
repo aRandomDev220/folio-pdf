@@ -18,6 +18,7 @@ The compiled build is generated locally in `dist/`. From a fresh clone, run `npm
 - Automatic PDF takeover, including embedded frames and POST responses when native MIME handling is available.
 - Local file picker, drag-and-drop, remote PDFs, and password-protected documents.
 - Continuous scrolling, page jumps, zoom, fit width/page, and rotation.
+- Compact 40px toolbar to leave more vertical space for the document.
 - Lazy thumbnails and document bookmarks.
 - Selectable text, incremental text search, internal links, and external links.
 - Original-byte download. Printing opens the original PDF in a separate native-viewer tab; use its toolbar or Ctrl+P there.
