@@ -4,9 +4,11 @@ A minimalist Chromium PDF viewer built around **Poppler 26.10.0**, compiled to W
 
 ## Install the built extension
 
+The packaged extension is available on the [GitHub Releases](https://github.com/aRandomDev220/folio-pdf/releases) page: download `folio-<version>.zip`, extract it, and follow the steps below. Building from source is optional.
+
 1. Open your browser’s extensions page (`chrome://extensions`, `edge://extensions`, `brave://extensions`, etc.).
 2. Enable **Developer mode**.
-3. Choose **Load unpacked** and select this project’s **`dist/`** folder.
+3. Choose **Load unpacked** and select this project’s **`dist/`** folder (or the extracted release archive).
 4. Open a PDF link. Click the Folio extension icon to open a file picker instead.
 
 The compiled build is generated locally in `dist/`. From a fresh clone, run `npm ci` followed by `npm run build`; the bundled Poppler engine assets are included in the repository. For legacy browsers, enable **Allow access to file URLs** on the extension details page to replace the viewer for `file://` PDFs. File selection and drag-and-drop work without that setting.
