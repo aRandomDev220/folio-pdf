@@ -106,6 +106,17 @@ test('starts with the black theme and retains an explicitly selected light theme
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 });
 
+test('reopens a document after a reload with the cached engine module', async ({ page }) => {
+  await page.goto('/viewer.html');
+  await page.locator('#file-input').setInputFiles({ name: 'cached.pdf', mimeType: 'application/pdf', buffer: makePdf(4) });
+  await expect(page.locator('.pdf-page.rendered').first()).toBeVisible();
+  // A reload spawns a fresh worker: the compiled module must load from IndexedDB.
+  await page.reload();
+  await page.locator('#file-input').setInputFiles({ name: 'cached.pdf', mimeType: 'application/pdf', buffer: makePdf(4) });
+  await expect(page.locator('.pdf-page.rendered').first()).toBeVisible();
+  await expect(page.locator('#page-count')).toHaveText('4');
+});
+
 test('Folio home clears the document and supports reopening with keyboard navigation', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/viewer.html');

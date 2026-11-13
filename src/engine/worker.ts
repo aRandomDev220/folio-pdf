@@ -1,9 +1,59 @@
 import type { DocumentInfo, EngineReply, EngineRequest, PageSize, WasmModule } from './types';
 
 let engine: Promise<WasmModule> | undefined;
+
+// The compiled WebAssembly module is structured-cloneable, so a rebuilt or
+// repeated session skips compilation by reusing the cached Module.
+function withCache<T>(store: IDBObjectStore, mode: IDBTransactionMode, run: (object: IDBObjectStore) => IDBRequest): Promise<T | undefined> {
+  return new Promise<T | undefined>((resolve) => {
+    try {
+      const request = run(store);
+      request.onsuccess = () => resolve(request.result as T);
+      request.onerror = () => resolve(undefined);
+    } catch { resolve(undefined); }
+  });
+}
+
+async function cachedModule(bytes: ArrayBuffer): Promise<WebAssembly.Module | undefined> {
+  try {
+    const database = await new Promise<IDBDatabase>((resolve, reject) => {
+      const request = indexedDB.open('folio-engine', 1);
+      request.onupgradeneeded = () => request.result.createObjectStore('wasm');
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    const store = database.transaction('wasm', 'readwrite').objectStore('wasm');
+    const key = `poppler-${bytes.byteLength}`;
+    const cached = await withCache<WebAssembly.Module>(store, 'readwrite', (object) => object.get(key));
+    if (cached) return cached;
+    const module = await WebAssembly.compile(bytes);
+    await withCache<void>(store, 'readwrite', (object) => object.put(module, key));
+    return module;
+  } catch { return undefined; }
+}
+
 async function initialize(base: string): Promise<WasmModule> {
   const { default: create } = await import(/* @vite-ignore */ `${base}poppler.js`);
-  const module: WasmModule = await create({ locateFile: (file: string) => base + file });
+  const module: WasmModule = await create({
+    locateFile: (file: string) => base + file,
+    instantiateWasm: async (imports: WebAssembly.Imports, receive: (instance: WebAssembly.Instance) => void) => {
+      const bytes = await fetch(`${base}poppler.wasm`).then((response) => {
+        if (!response.ok) throw new Error('The Poppler engine binary is missing. Rebuild the extension.');
+        return response.arrayBuffer();
+      });
+      try {
+        const wasm = await cachedModule(bytes) ?? await WebAssembly.compile(bytes);
+        const instance = new WebAssembly.Instance(wasm, imports);
+        receive(instance);
+        return instance.exports;
+      } catch {
+        // Cache problems must never break engine startup; compile fresh instead.
+        const instance = new WebAssembly.Instance(await WebAssembly.compile(bytes), imports);
+        receive(instance);
+        return instance.exports;
+      }
+    },
+  });
   const response = await fetch(`${base}assets.json`);
   if (!response.ok) throw new Error('The bundled font and character-map assets are missing. Rebuild the engine.');
   const files: { path: string; virtual: string }[] = await response.json();
@@ -22,8 +72,16 @@ function read<T>(module: WasmModule, ptr: number): T {
 }
 
 async function execute(method: string, args: unknown[]): Promise<unknown> {
-  if (method === 'initialize') { engine ??= initialize(args[0] as string); await engine; return true; }
-  if (!engine) throw new Error('The rendering engine has not been initialized.');
+  if (method === 'initialize') {
+    // A failed load must not poison the cached promise for the next session.
+    engine ??= initialize(args[0] as string).catch((error) => { engine = undefined; throw error; });
+    await engine;
+    return true;
+  }
+  if (!engine) {
+    if (method === 'close') return true; // Nothing was ever loaded on this worker.
+    throw new Error('The rendering engine has not been initialized.');
+  }
   const module = await engine;
   switch (method) {
     case 'open': {

@@ -6,6 +6,8 @@ export class PdfEngine {
   private nextId = 0;
   private pending = new Map<number, { resolve: (value: unknown) => void; reject: (error: Error) => void }>();
   private disposed = false;
+  /** A stopped worker cannot recover; the next session must spawn a fresh one. */
+  crashed = false;
 
   constructor() {
     this.worker.onmessage = (event: MessageEvent<EngineReply>) => {
@@ -17,8 +19,8 @@ export class PdfEngine {
         const error = new Error(reply.error); error.name = reply.code || 'Error'; pending.reject(error);
       } else pending.resolve(reply.result);
     };
-    this.worker.onerror = () => this.fail(new Error('The Poppler worker stopped. Try reopening the document.'));
-    this.worker.onmessageerror = () => this.fail(new Error('Unable to read the rendering worker response.'));
+    this.worker.onerror = () => { this.crashed = true; this.fail(new Error('The Poppler worker stopped. Try reopening the document.')); };
+    this.worker.onmessageerror = () => { this.crashed = true; this.fail(new Error('Unable to read the rendering worker response.')); };
   }
 
   private fail(error: Error) { for (const request of this.pending.values()) request.reject(error); this.pending.clear(); }
@@ -37,6 +39,11 @@ export class PdfEngine {
   text(page: number, rotation: number) { return this.call<TextWord[]>('text', [page, rotation]); }
   links(page: number, rotation: number) { return this.call<PdfLink[]>('links', [page, rotation]); }
   outline() { return this.call<OutlineItem[]>('outline'); }
+  /** Releases the document while keeping the worker and compiled module warm. */
+  close() {
+    if (this.disposed || this.crashed) return Promise.resolve(true);
+    return this.call<boolean>('close');
+  }
   dispose() {
     this.disposed = true;
     this.worker.terminate();

@@ -195,7 +195,7 @@ class Viewer {
       const file = event.dataTransfer?.files[0];
       if (file) { this.sourceUrl = ''; this.streamContext = false; void this.open(file, file.name); }
     });
-    window.addEventListener('pagehide', () => this.endSession());
+    window.addEventListener('pagehide', () => { this.endSession(); this.engine?.dispose(); this.engine = undefined; });
   }
 
   private setTheme(theme: string) {
@@ -270,7 +270,7 @@ class Viewer {
     try {
       const response = await fetch(url, { credentials: 'include', signal: controller.signal });
       if (!response.ok) throw new Error(`The PDF could not be downloaded (${response.status}).`);
-      const blob = await response.blob();
+      const blob = await this.readBody(response);
       if (controller.signal.aborted) return;
       await this.open(blob, title);
     } catch (error) {
@@ -278,10 +278,26 @@ class Viewer {
       this.showState('This document couldn’t be opened.', error instanceof Error ? error.message : 'The source is unavailable.', false);
     }
   }
+  private async readBody(response: Response): Promise<Blob> {
+    const type = response.headers.get('content-type') || 'application/pdf';
+    const total = Number(response.headers.get('content-length')) || 0;
+    if (!response.body) return response.blob();
+    const reader = response.body.getReader();
+    const chunks: BlobPart[] = []; let loaded = 0;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      chunks.push(value); loaded += value.length;
+      if (total) $('#state-detail').textContent = `Downloading — ${formatSize(loaded)} of ${formatSize(total)}. Rendering happens on your device.`;
+    }
+    return new Blob(chunks, { type });
+  }
   private endSession() {
     this.epoch++; this.searchEpoch++;
-    this.scheduler?.stop(); this.engine?.dispose(); this.engine = undefined; this.info = undefined;
-    this.scheduler = undefined; this.layout = undefined;
+    this.scheduler?.stop(); this.scheduler = undefined; this.info = undefined; this.layout = undefined;
+    // The worker keeps running with only the compiled module loaded; the next
+    // document reuses it. Full teardown happens on pagehide.
+    void this.engine?.close();
     this.cache.clear(); this.words.clear(); this.links.clear();
     for (const view of this.views.values()) { view.canvas.width = 0; view.canvas.height = 0; view.element.remove(); }
     this.views.clear(); this.thumbnailViews.clear(); $('#thumbnails').replaceChildren();
@@ -321,7 +337,9 @@ class Viewer {
     $('#more-menu').hidden = true;
     this.showState('Opening your document…', 'Starting the Poppler rendering engine.', true);
     this.openedAt = performance.now();
-    const engine = new PdfEngine(); this.engine = engine;
+    // The engine stays warm across sessions; only a crashed worker is replaced.
+    if (this.engine?.crashed) { this.engine.dispose(); this.engine = undefined; }
+    const engine = this.engine ??= new PdfEngine(); this.engine = engine;
     try {
       await engine.initialize();
       if (epoch !== this.epoch) return;
