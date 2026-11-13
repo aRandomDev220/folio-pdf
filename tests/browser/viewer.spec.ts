@@ -123,8 +123,16 @@ test('spread mode pairs pages, presentation hides the chrome, and inversion pers
   await expect(page.locator('.pdf-page.rendered').first()).toBeVisible();
   await page.getByRole('button', { name: 'More options' }).click();
   await page.locator('#spread').check();
-  // The second page of the first spread sits to the right of the first.
-  await expect.poll(async () => page.locator('.pdf-page[data-page="2"]').evaluate((el) => parseFloat(el.style.left || '0'))).toBeGreaterThan(0);
+  // Assert the rendered geometry, not the inline style: the two pages of the
+  // first spread must sit side by side without overlapping, inside the viewport.
+  await expect.poll(async () => page.evaluate(() => {
+    const rect = (n: number) => document.querySelector<HTMLElement>(`.pdf-page[data-page="${n}"]`)?.getBoundingClientRect();
+    const one = rect(1); const two = rect(2);
+    if (!one || !two) return false;
+    const viewport = document.querySelector('#viewport')!.clientWidth;
+    return two.left >= one.right - 1 && Math.abs(one.width - two.width) < 2 && one.left >= 0 && two.right <= viewport;
+  }), { timeout: 10000 }).toBe(true);
+  await page.screenshot({ path: 'artifacts/spread-mode.png' });
   await page.locator('#page-invert').check();
   await expect(page.locator('body')).toHaveClass(/inverting/);
   await page.keyboard.press('Escape'); // Close the menu.

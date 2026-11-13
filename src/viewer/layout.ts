@@ -7,7 +7,7 @@ export class PageLayout {
   sizes: PageSize[] = [];
   /** Horizontal position per page inside the pages box; used in spread mode. */
   left: number[] = [];
-  rows: Array<{ offset: number; height: number; first: number }> = [];
+  rows: Array<{ offset: number; height: number; width: number; first: number }> = [];
   totalHeight = 0;
   maxWidth = 0;
   private perRow: 1 | 2;
@@ -30,13 +30,14 @@ export class PageLayout {
     this.maxWidth = rowList.reduce((width, row) => Math.max(width, row.width), 0);
     let offset = this.padding;
     for (const row of rowList) {
-      const inset = spread ? (this.maxWidth - row.width) / 2 : 0;
-      this.rows.push({ offset, height: row.height, first: row.first });
-      this.offsets[row.first] = offset; this.sizes[row.first] = scaled(pages[row.first]); this.left[row.first] = inset;
+      this.rows.push({ offset, height: row.height, width: row.width, first: row.first });
+      // Horizontal offsets are relative to the row's own left edge; position()
+      // centers the row inside the actual pages-box width.
+      this.offsets[row.first] = offset; this.sizes[row.first] = scaled(pages[row.first]); this.left[row.first] = 0;
       if (row.second !== undefined) {
         this.offsets[row.second] = offset;
         this.sizes[row.second] = scaled(pages[row.second]);
-        this.left[row.second] = inset + this.sizes[row.first].width + this.gap;
+        this.left[row.second] = this.sizes[row.first].width + this.gap;
       }
       offset += row.height + this.gap;
     }
@@ -55,6 +56,9 @@ export class PageLayout {
   }
   rowHeight(index: number) {
     return this.rows[Math.floor(index / this.perRow)]?.height ?? 0;
+  }
+  rowWidth(index: number) {
+    return this.rows[Math.floor(index / this.perRow)]?.width ?? 0;
   }
   window(top: number, height: number, overscan = 600) {
     const first = this.rowIndexAt(Math.max(0, top - overscan));

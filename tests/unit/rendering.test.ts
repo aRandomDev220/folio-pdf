@@ -32,6 +32,16 @@ describe('bounded rendering', () => {
     const rotated = new PageLayout([{ width: 300, height: 500 }], 2, 90);
     expect(rotated.sizes[0]).toEqual({ width: 1000, height: 600 });
   });
+  it('lays out spread rows as side-by-side pairs with row-relative offsets', () => {
+    const pages = [{ width: 612, height: 792 }, { width: 612, height: 792 }, { width: 612, height: 792 }];
+    const layout = new PageLayout(pages, 1, 0, true);
+    expect(layout.rowWidth(0)).toBe(612 * 2 + 24); // First row: two pages plus the gap.
+    expect(layout.left[0]).toBe(0); expect(layout.left[1]).toBe(636); // Second page sits right of the first.
+    expect(layout.rowWidth(2)).toBe(612); // Odd last page is alone in its row.
+    expect(layout.rowHeight(0)).toBe(792); expect(layout.rowHeight(2)).toBe(792);
+    expect(layout.pageAt(layout.offsets[2])).toBe(2); // Row lookup still lands on the pair's first page.
+    expect(layout.window(0, 800, 600)).toEqual([0, 1, 2]); // Windowing expands to both pages of each row.
+  });
   it('caps raster pixels even on a high-density display at extreme zoom', () => {
     const size = { width: 1400, height: 2000 };
     const scale = renderScale(4, 3, size);

@@ -116,6 +116,7 @@ class Viewer {
   private firstPaint = false;
   private sessionErrors = new Set<number>();
   private spread = false;
+  private pagesWidth = 0;
   private presenting = false;
   private savedZoomMode = '';
 
@@ -487,6 +488,7 @@ class Viewer {
     else this.scale = Math.min(4, Math.max(0.25, Number(this.zoomMode) || 1));
     this.layout = new PageLayout(this.info.pages, this.scale, this.rotation, this.spread);
     const pages = $('#pages'); pages.style.height = `${this.layout.totalHeight}px`; pages.style.minWidth = `${this.layout.maxWidth + 80}px`;
+    this.pagesWidth = pages.clientWidth; // Re-flow now so spread rows center against the real box.
     if (preserve) viewport.scrollTop = this.layout.offsets[anchor] + fraction * this.layout.rowHeight(anchor);
     for (const [index, view] of this.views) this.position(index, view);
     this.updateSoon();
@@ -516,8 +518,15 @@ class Viewer {
     const size = this.layout!.sizes[index];
     view.element.style.width = `${size.width}px`; view.element.style.height = `${size.height}px`;
     view.element.style.transform = `translateY(${this.layout!.offsets[index]}px)`;
-    if (this.spread) view.element.style.left = `${this.layout!.left[index]}px`;
-    else view.element.style.removeProperty('left'); // The stylesheet centers single pages.
+    if (this.spread) {
+      // The stylesheet centers pages with left:0/right:0/margin:auto; an
+      // inline left is ignored while those stand, so pin the row explicitly.
+      const rowLeft = Math.max(0, (this.pagesWidth - this.layout!.rowWidth(index)) / 2);
+      view.element.style.left = `${rowLeft + this.layout!.left[index]}px`;
+      view.element.style.right = 'auto'; view.element.style.margin = '0';
+    } else {
+      view.element.style.removeProperty('left'); view.element.style.removeProperty('right'); view.element.style.removeProperty('margin');
+    }
     // Keep the scaled text layer in sync even when zooming skips a repaint.
     view.text.style.transform = `scale(${this.scale})`;
     // Existing raster remains a cheap preview while a new zoom render is queued.
