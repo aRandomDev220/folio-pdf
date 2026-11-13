@@ -11,6 +11,16 @@ test('opens a real Poppler document, searches, navigates bookmarks and rotates',
   await expect(page.locator('.pdf-page[data-page="1"].rendered')).toBeVisible();
   await expect(page.locator('#page-count')).toHaveText('6');
   await expect(page.locator('.text-layer').first()).toContainText('Folio');
+  // The scaled text layer must stay selectable and hit-testable.
+  const selection = await page.locator('#viewport').evaluate(() => {
+    const layer = document.querySelector('.text-layer') as HTMLElement;
+    const range = document.createRange();
+    range.selectNodeContents(layer.querySelector('span')!);
+    const domSelection = getSelection()!;
+    domSelection.removeAllRanges(); domSelection.addRange(range);
+    return domSelection.toString().trim();
+  });
+  expect(selection.length).toBeGreaterThan(0);
   // A real pixel assertion catches WASM/font/bitmap transfer failures that a loaded UI misses.
   const pixel = await page.locator('.pdf-page canvas').first().evaluate((canvas: HTMLCanvasElement) => {
     const data = canvas.getContext('2d')!.getImageData(Math.round(canvas.width * 0.2), Math.round(canvas.height * 0.25), 1, 1).data;

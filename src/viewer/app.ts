@@ -413,6 +413,8 @@ class Viewer {
     const size = this.layout!.sizes[index];
     view.element.style.width = `${size.width}px`; view.element.style.height = `${size.height}px`;
     view.element.style.transform = `translateY(${this.layout!.offsets[index]}px)`;
+    // Keep the scaled text layer in sync even when zooming skips a repaint.
+    view.text.style.transform = `scale(${this.scale})`;
     // Existing raster remains a cheap preview while a new zoom render is queued.
   }
   private updateSoon() { if (!this.frame) this.frame = requestAnimationFrame(() => { this.frame = 0; this.update(); }); }
@@ -447,8 +449,27 @@ class Viewer {
       const cached = this.cache.get(key);
       if (cached && view.key !== key) this.paint(view, key, cached);
       if (!cached && view.key !== key && !this.sessionErrors.has(index)) {
-        const target = view, rotation = this.rotation;
-        this.scheduler.enqueue(key, Math.abs(index + 1 - this.currentPage) * 10, async () => {
+        const rotation = this.rotation;
+        const rank = Math.abs(index + 1 - this.currentPage);
+        const pixels = this.info.pages[index].width * this.info.pages[index].height * rasterScale * rasterScale;
+        // A heavy page gets a cheap low-resolution pass first so a long
+        // rasterization never leaves the page blank while it completes.
+        const previewScale = view.key === '' && pixels > 3_000_000
+          ? renderScale(this.scale, devicePixelRatio, this.info.pages[index], 2_500_000) : 0;
+        if (previewScale && previewScale < rasterScale) {
+          const previewKey = `preview:${index}:${previewScale.toFixed(4)}:${rotation}`;
+          wantedKeys.add(previewKey);
+          const target = view;
+          this.scheduler.enqueue(previewKey, rank * 10 - 1, async () => {
+            const raster = await this.engine!.render(index + 1, previewScale, rotation);
+            const stale = epoch !== this.epoch || this.views.get(index) !== target
+              || this.rotation !== rotation || target.key !== '';
+            if (!stale) this.paint(target, previewKey, raster);
+            raster.bitmap.close(); // Previews are transient and never cached.
+          });
+        }
+        const target = view;
+        this.scheduler.enqueue(key, rank * 10, async () => {
           try {
             const raster = await this.engine!.render(index + 1, rasterScale, rotation);
             if (epoch !== this.epoch) { raster.bitmap.close(); return; }
@@ -499,18 +520,24 @@ class Viewer {
     if (!this.firstPaint) { this.firstPaint = true; this.firstPageMilliseconds = performance.now() - this.openedAt; }
   }
   private paintText(index: number, view: PageView, words: TextWord[]) {
-    const key = `${this.rotation}:${this.scale}:${this.query}:${this.matchIndex}`;
+    // The layer is laid out at 1× and scaled with a CSS transform, so zooming
+    // never rebuilds the spans; position() updates the transform instead.
+    const key = `${this.rotation}:${this.query}:${this.matchIndex}`;
     if (view.text.dataset.key === key) return;
     view.text.dataset.key = key;
+    const page = this.info!.pages[index];
+    const baseWidth = this.rotation % 180 ? page.height : page.width;
+    const baseHeight = this.rotation % 180 ? page.width : page.height;
+    view.text.style.width = `${baseWidth}px`; view.text.style.height = `${baseHeight}px`;
+    view.text.style.transform = `scale(${this.scale})`;
     const fragment = document.createDocumentFragment();
     const active = this.matches[this.matchIndex];
     const ranges = this.matchesByPage.get(index + 1);
     words.forEach((word, wordIndex) => {
       if (!word.text || word.width <= 0 || word.height <= 0) return;
       const span = document.createElement('span'); span.textContent = word.text + ' '; span.dataset.word = String(wordIndex);
-      const width = word.width * this.scale, height = word.height * this.scale;
-      span.style.left = `${word.x * this.scale}px`; span.style.top = `${word.y * this.scale}px`;
-      span.style.width = `${width}px`; span.style.height = `${height}px`; span.style.fontSize = `${height * 0.85}px`;
+      span.style.left = `${word.x}px`; span.style.top = `${word.y}px`;
+      span.style.width = `${word.width}px`; span.style.height = `${word.height}px`; span.style.fontSize = `${word.height * 0.85}px`;
       if (word.rotation === 90 || word.rotation === 270) span.style.writingMode = word.rotation === 90 ? 'vertical-rl' : 'vertical-lr';
       if (ranges?.some((match) => wordIndex >= match.first && wordIndex <= match.last)) span.classList.add('found-word');
       if (active && active.page === index + 1 && wordIndex >= active.first && wordIndex <= active.last) span.classList.add('active-match');
@@ -649,7 +676,7 @@ class Viewer {
     this.matchIndex = (this.matchIndex + direction + this.matches.length) % this.matches.length;
     const match = this.matches[this.matchIndex]; this.go(match.page); this.searchCount(); this.update();
     const view = this.views.get(match.page - 1); const word = view?.text.querySelector<HTMLElement>(`[data-word="${match.first}"]`);
-    if (word && this.layout) { const y = this.layout.offsets[match.page - 1] + parseFloat(word.style.top); $('#viewport').scrollTop = Math.max(0, y - $('#viewport').clientHeight / 3); this.update(); }
+    if (word && this.layout) { const y = this.layout.offsets[match.page - 1] + parseFloat(word.style.top) * this.scale; $('#viewport').scrollTop = Math.max(0, y - $('#viewport').clientHeight / 3); this.update(); }
   }
   private download() {
     if (!this.blob) return;

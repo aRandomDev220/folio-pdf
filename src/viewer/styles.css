@@ -42,7 +42,7 @@ button svg, a svg { flex-shrink: 0; }
 .page-placeholder { position: absolute; inset: 0; display: grid; place-items: center; color: #a8a8a8; font-size: 12px; padding: 24px; text-align: center; }
 .rendered .page-placeholder { display: none; }
 .text-layer, .link-layer { position: absolute; inset: 0; overflow: hidden; }
-.text-layer { user-select: text; }
+.text-layer { user-select: text; transform-origin: 0 0; }
 .text-layer > span { position: absolute; color: transparent; cursor: text; line-height: 1; white-space: pre; overflow: hidden; }
 .text-layer > span::selection { background: #77777755; color: transparent; }
 .text-layer .found-word { background: #e9c74560; }
