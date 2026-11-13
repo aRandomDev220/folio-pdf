@@ -1,6 +1,6 @@
 import { chromium, expect, test } from '@playwright/test';
 import { resolve } from 'node:path';
-import { writeFile } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import { browserOptions } from '../../playwright.config';
 import { makePdf } from '../fixtures';
@@ -29,7 +29,7 @@ for (const trigger of ['menu', 'shortcut', 'manual'] as const) {
         await page.locator('#file-input').setInputFiles({ name: 'print.pdf', mimeType: 'application/pdf', buffer: pdf });
       } else {
         const file = resolve('.build/print-dialog-test.pdf');
-        await writeFile(file, pdf);
+        await mkdir('.build', { recursive: true }); await writeFile(file, pdf);
         await page.goto(pathToFileURL(file).href);
       }
       let viewer = page.mainFrame();

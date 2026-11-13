@@ -1,7 +1,7 @@
 import { chromium, expect, test, type BrowserContext, type Frame, type Page } from '@playwright/test';
 import { createServer, type Server } from 'node:http';
 import { resolve } from 'node:path';
-import { writeFile } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import { makePdf } from '../fixtures';
 import { browserOptions } from '../../playwright.config';
@@ -89,7 +89,7 @@ test('native stream handler opens a POST-generated PDF without a second request'
 
 test('native stream handler takes over local file URLs without manual file permission', async () => {
   test.skip(!hasMimeHandler, 'Legacy file takeover needs the browser file-access setting.');
-  const path = resolve('.build/local-test.pdf'); await writeFile(path, pdf);
+  const path = resolve('.build/local-test.pdf'); await mkdir('.build', { recursive: true }); await writeFile(path, pdf);
   const page = await context.newPage(); const url = pathToFileURL(path).href;
   await page.goto(url);
   const frame = await viewerFrame(page);
