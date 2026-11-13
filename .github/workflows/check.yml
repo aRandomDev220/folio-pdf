@@ -29,8 +29,7 @@ jobs:
           cache: npm
 
       - run: npm ci
+      - run: npm run build
       - run: npx playwright install --with-deps chromium
       - name: Browser tests (xvfb for the headed print-dialog checks)
         run: xvfb-run --auto-servernum npm run test:browser
-        env:
-          DEBUG: pw:browser
