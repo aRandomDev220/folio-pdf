@@ -102,6 +102,7 @@ class Viewer {
   private searchEpoch = 0;
   private query = '';
   private matches: Match[] = [];
+  private matchesByPage = new Map<number, Array<{ first: number; last: number }>>();
   private matchIndex = -1;
   private searchPage = 1;
   private searchComplete = false;
@@ -294,7 +295,7 @@ class Viewer {
     this.endSession();
     this.blob = undefined; this.title = ''; this.sourceUrl = ''; this.streamContext = false;
     this.rotation = 0; this.scale = 1; this.zoomMode = 'width'; this.currentPage = 1;
-    this.query = ''; this.matches = []; this.matchIndex = -1; this.searchPage = 1; this.searchComplete = false;
+    this.query = ''; this.matches = []; this.matchesByPage.clear(); this.matchIndex = -1; this.searchPage = 1; this.searchComplete = false;
     clearTimeout(this.toastTimer);
     $<HTMLDialogElement>('#password-dialog').close();
     $<HTMLInputElement>('#password').value = ''; $('#password-error').textContent = '';
@@ -316,7 +317,7 @@ class Viewer {
     this.endSession();
     const epoch = this.epoch;
     this.blob = blob; this.title = title; this.rotation = 0; this.currentPage = 1;
-    this.matches = []; this.query = ''; $('#find-bar').hidden = true; $<HTMLInputElement>('#find-input').value = '';
+    this.matches = []; this.matchesByPage.clear(); this.query = ''; $('#find-bar').hidden = true; $<HTMLInputElement>('#find-input').value = '';
     $('#more-menu').hidden = true;
     this.showState('Opening your document…', 'Starting the Poppler rendering engine.', true);
     this.openedAt = performance.now();
@@ -401,8 +402,9 @@ class Viewer {
   private rotate() {
     if (!this.info) return;
     this.rotation = (this.rotation + 90) % 360;
-    this.words.clear(); this.links.clear(); this.cache.clear();
-    for (const view of this.views.values()) { view.text.replaceChildren(); view.links.replaceChildren(); }
+    // Cache keys include the rotation, so rasters, words and links for other
+    // orientations stay valid; the LRU budget evicts them when they age out.
+    // Only the thumbnail buttons carry a rotation-independent rendered marker.
     this.relayout(true); this.update();
     if (this.query) this.startSearch();
     this.thumbnailViews.clear(); $('#thumbnails').replaceChildren(); this.updateThumbnails();
@@ -502,6 +504,7 @@ class Viewer {
     view.text.dataset.key = key;
     const fragment = document.createDocumentFragment();
     const active = this.matches[this.matchIndex];
+    const ranges = this.matchesByPage.get(index + 1);
     words.forEach((word, wordIndex) => {
       if (!word.text || word.width <= 0 || word.height <= 0) return;
       const span = document.createElement('span'); span.textContent = word.text + ' '; span.dataset.word = String(wordIndex);
@@ -509,7 +512,7 @@ class Viewer {
       span.style.left = `${word.x * this.scale}px`; span.style.top = `${word.y * this.scale}px`;
       span.style.width = `${width}px`; span.style.height = `${height}px`; span.style.fontSize = `${height * 0.85}px`;
       if (word.rotation === 90 || word.rotation === 270) span.style.writingMode = word.rotation === 90 ? 'vertical-rl' : 'vertical-lr';
-      if (this.query && this.matches.some((match) => match.page === index + 1 && wordIndex >= match.first && wordIndex <= match.last)) span.classList.add('found-word');
+      if (ranges?.some((match) => wordIndex >= match.first && wordIndex <= match.last)) span.classList.add('found-word');
       if (active && active.page === index + 1 && wordIndex >= active.first && wordIndex <= active.last) span.classList.add('active-match');
       fragment.append(span);
     });
@@ -599,12 +602,12 @@ class Viewer {
     if (!this.info?.canCopy) return;
     $('#find-bar').hidden = !show;
     if (show) { $('#find-input').focus(); $<HTMLInputElement>('#find-input').select(); }
-    else { this.query = ''; this.matches = []; this.searchEpoch++; this.update(); $('#viewport').focus(); }
+    else { this.query = ''; this.matches = []; this.matchesByPage.clear(); this.searchEpoch++; this.update(); $('#viewport').focus(); }
   }
   private startSearch() {
     if (!this.info) return;
     this.searchEpoch++; this.query = $<HTMLInputElement>('#find-input').value.trim().toLocaleLowerCase();
-    this.matches = []; this.matchIndex = -1; this.searchPage = 1; this.searchComplete = false;
+    this.matches = []; this.matchesByPage.clear(); this.matchIndex = -1; this.searchPage = 1; this.searchComplete = false;
     $('#find-count').textContent = this.query ? 'Searching…' : '';
     this.update(); if (this.query) this.scanNext();
   }
@@ -615,15 +618,22 @@ class Viewer {
     this.scheduler.enqueue(`search:${generation}:${page}`, 400, async () => {
       const words = this.words.get(`text:${page - 1}:${rotation}`) || await this.engine!.text(page, rotation);
       if (generation !== this.searchEpoch || epoch !== this.epoch) return;
-      const text = words.map((word) => word.text.toLocaleLowerCase()).join(' ');
+      // Lowercase once per page; the word cache keeps the original casing.
+      const lower = words.map((word) => word.text.toLocaleLowerCase());
+      const text = lower.join(' ');
       const offsets: number[] = []; let offset = 0;
-      for (const word of words) { offsets.push(offset); offset += word.text.toLocaleLowerCase().length + 1; }
+      for (const word of lower) { offsets.push(offset); offset += word.length + 1; }
       let at = 0;
+      const ranges: Match[] = [];
       while ((at = text.indexOf(this.query, at)) !== -1) {
         let first = 0, last = 0;
         for (let i = 0; i < offsets.length; i++) { if (offsets[i] <= at) first = i; if (offsets[i] < at + this.query.length) last = i; }
-        this.matches.push({ page, first, last }); at += Math.max(1, this.query.length);
+        ranges.push({ page, first, last }); at += Math.max(1, this.query.length);
         if (this.matches.length >= 10000) break;
+      }
+      if (ranges.length) {
+        this.matches.push(...ranges);
+        this.matchesByPage.set(page, ranges);
       }
       if (this.matchIndex < 0 && this.matches.length) { this.matchIndex = 0; this.go(this.matches[0].page); }
       this.searchPage++; this.searchCount(); this.update();

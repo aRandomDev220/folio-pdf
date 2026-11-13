@@ -30,5 +30,12 @@ export class PageLayout {
 }
 
 export function renderScale(cssScale: number, dpr: number, size: PageSize, maxPixels = 8_000_000) {
-  return Math.min(cssScale * Math.min(dpr, 2), Math.sqrt(maxPixels / (size.width * size.height)), 16);
+  const raw = Math.min(cssScale * Math.min(dpr, 2), Math.sqrt(maxPixels / (size.width * size.height)), 16);
+  // Quantize to a 1/32 grid so transient zoom steps reuse cached rasters
+  // instead of rendering a new bitmap for every continuous wheel notch.
+  const snapped = Math.round(raw * 32) / 32;
+  const pixels = (scale: number) => scale * scale * size.width * size.height;
+  if (snapped > 0 && pixels(snapped) <= maxPixels) return snapped;
+  const floored = Math.floor(raw * 32) / 32;
+  return floored > 0 ? floored : raw;
 }

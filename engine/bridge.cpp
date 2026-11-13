@@ -183,8 +183,10 @@ const char *folio_text(int page, int rotation) { return json([&] {
     auto words = device.makeWordList();
     std::ostringstream s; s << '['; bool comma = false;
     for (auto word : words->getWords()) {
-        if (comma) s << ','; comma = true;
         const auto bounds = word->getBBox();
+        if (!std::isfinite(bounds.x1) || !std::isfinite(bounds.y1)
+            || !std::isfinite(bounds.x2) || !std::isfinite(bounds.y2)) continue;
+        if (comma) s << ','; comma = true;
         auto text = word->getText();
         s << "{\"text\":" << quote(text ? *text : std::string()) << ",\"x\":" << bounds.x1
           << ",\"y\":" << bounds.y1 << ",\"width\":" << bounds.x2 - bounds.x1
@@ -204,6 +206,7 @@ const char *folio_links(int page, int rotation) { return json([&] {
         const std::string uri = action && action->getKind() == actionURI ? static_cast<const LinkURI *>(action)->getURI() : std::string();
         if (!target && uri.empty()) continue;
         const auto &rect = link->getRect();
+        if (!std::isfinite(rect.x1) || !std::isfinite(rect.y1) || !std::isfinite(rect.x2) || !std::isfinite(rect.y2)) continue;
         double xs[4], ys[4];
         const double x[4] = {rect.x1, rect.x1, rect.x2, rect.x2};
         const double y[4] = {rect.y1, rect.y2, rect.y1, rect.y2};
