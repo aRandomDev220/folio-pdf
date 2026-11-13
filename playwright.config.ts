@@ -4,6 +4,11 @@ import { homedir } from 'node:os';
 
 const cached = `${homedir()}/.cache/ms-playwright/chromium-1234/chrome-linux64/chrome`;
 export const executablePath = process.env.FOLIO_BROWSER || (existsSync(cached) ? cached : undefined);
+/**
+ * Playwright's bundled headless shell cannot load Chrome extensions; the
+ * 'chromium' channel opts into the full new-headless build for those specs.
+ */
+export const browserOptions = executablePath ? { executablePath } : { channel: 'chromium' as const };
 export default defineConfig({
   testDir: './tests/browser',
   timeout: 45000,

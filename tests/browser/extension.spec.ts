@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import { makePdf } from '../fixtures';
-import { executablePath } from '../../playwright.config';
+import { browserOptions } from '../../playwright.config';
 
 let context: BrowserContext;
 let extensionId: string;
@@ -25,7 +25,7 @@ test.beforeAll(async () => {
   origin = `http://localhost:${(server.address() as { port: number }).port}`;
   const path = resolve('dist');
   context = await chromium.launchPersistentContext('', {
-    executablePath, headless: true, viewport: { width: 1440, height: 1000 },
+    ...browserOptions, headless: true, viewport: { width: 1440, height: 1000 },
     args: [`--disable-extensions-except=${path}`, `--load-extension=${path}`],
   });
   const worker = context.serviceWorkers()[0] || await context.waitForEvent('serviceworker');

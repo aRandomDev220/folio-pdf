@@ -2,7 +2,7 @@ import { chromium, expect, test } from '@playwright/test';
 import { resolve } from 'node:path';
 import { writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
-import { executablePath } from '../../playwright.config';
+import { browserOptions } from '../../playwright.config';
 import { makePdf } from '../fixtures';
 
 // A headless window.print() is a no-op. These checks inspect the real preview
@@ -12,7 +12,7 @@ for (const trigger of ['menu', 'shortcut', 'manual'] as const) {
     test.skip(process.platform === 'linux' && !process.env.DISPLAY, 'A display (or Xvfb) is required to verify the print dialog.');
     const path = resolve('dist');
     const context = await chromium.launchPersistentContext('', {
-      executablePath, headless: false, viewport: { width: 1440, height: 1000 },
+      ...browserOptions, headless: false, viewport: { width: 1440, height: 1000 },
       args: [`--disable-extensions-except=${path}`, `--load-extension=${path}`],
     });
     try {

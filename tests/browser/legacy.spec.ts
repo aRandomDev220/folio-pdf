@@ -1,7 +1,7 @@
 import { chromium, expect, test } from '@playwright/test';
 import { createServer } from 'node:http';
 import { resolve } from 'node:path';
-import { executablePath } from '../../playwright.config';
+import { browserOptions } from '../../playwright.config';
 import { makePdf } from '../fixtures';
 
 test('legacy network rules work when the MIME-handler API is unavailable', async () => {
@@ -17,7 +17,7 @@ test('legacy network rules work when the MIME-handler API is unavailable', async
   await new Promise<void>((done) => server.listen(0, '127.0.0.1', done));
   const origin = `http://localhost:${(server.address() as { port: number }).port}`;
   const extension = resolve('dist');
-  const context = await chromium.launchPersistentContext('', { executablePath, headless: true, args: [`--disable-extensions-except=${extension}`, `--load-extension=${extension}`] });
+  const context = await chromium.launchPersistentContext('', { ...browserOptions, headless: true, args: [`--disable-extensions-except=${extension}`, `--load-extension=${extension}`] });
   try {
     const worker = context.serviceWorkers()[0] || await context.waitForEvent('serviceworker');
     const id = new URL(worker.url()).host;
