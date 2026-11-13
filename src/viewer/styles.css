@@ -127,6 +127,8 @@ dialog p { font-size: 12px; color: var(--muted); line-height: 1.8; }
 .dialog-actions { display: flex; justify-content: flex-end; gap: 10px; }
 .embedded .brand, .embedded .document-title, .embedded .statusbar { display: none !important; }
 .embedded .toolbar { padding: 0 10px; }
+.presenting .toolbar, .presenting .statusbar, .presenting .sidebar, .presenting .find-bar { display: none !important; }
+.inverting .pdf-page > canvas, .inverting .thumbnail canvas { filter: invert(1) hue-rotate(180deg); }
 @media (max-width: 1100px) { .document-title { max-width: 140px; } .toolbar { gap: 8px; } .toolbar-divider { margin: 0 4px; } }
 @media (max-width: 850px) { .document-title { display: none; } .toolbar { padding: 0 10px; } .toolbar-left { flex: 0; } .toolbar-right { flex: 0; } .brand { font-size: 19px; } .brand-mark { display: none; } .toolbar-center { gap: 1px; } }
 @media (max-width: 620px) { .toolbar { gap: 4px; padding: 0 8px; } .brand { font-size: 18px; } .toolbar-divider { display: none; } .toolbar-right { gap: 0; } .zoom-controls > button { display: none; } #zoom { width: 70px; font-size: 11px; } .sidebar { width: 175px; } .welcome-features { gap: 10px; flex-wrap: wrap; } h1 { letter-spacing: -2px; } .statusbar { padding: 0 12px; gap: 10px; } #render-status { display: none; } }

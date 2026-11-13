@@ -15,6 +15,7 @@ export class RenderScheduler {
   }
   stop() { this.stopped = true; this.jobs.clear(); }
   get queued() { return this.jobs.size; }
+  get running() { return this.active !== undefined; }
   private async pump() {
     if (this.active || this.stopped || this.jobs.size === 0) return;
     const job = [...this.jobs.values()].sort((a, b) => a.priority - b.priority)[0];

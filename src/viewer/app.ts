@@ -1,9 +1,9 @@
 import './styles.css';
 import { PdfEngine } from '../engine/client';
-import type { DocumentInfo, OutlineItem, PdfLink, Raster, TextWord } from '../engine/types';
+import type { DocumentInfo, OutlineItem, PageSize, PdfLink, Raster, TextWord } from '../engine/types';
 import { inExtension, mimeHandler } from '../extension/api';
 import { BudgetCache } from './cache';
-import { PageLayout, renderScale } from './layout';
+import { PAGE_GAP, PageLayout, renderScale } from './layout';
 import { RenderScheduler } from './scheduler';
 import { icon } from './icons';
 
@@ -37,8 +37,11 @@ $('#app').innerHTML = `
     <button id="rotate" data-needs-document disabled>${icon('rotate')}<span>Rotate clockwise</span><kbd>R</kbd></button>
     <button id="print" data-needs-document disabled>${icon('print')}<span>Print document</span><kbd>Ctrl P</kbd></button>
     <button id="native" disabled>${icon('external')}<span>Open in browser viewer</span></button>
+    <button id="present" data-needs-document disabled>${icon('present')}<span>Presentation mode</span><kbd>P</kbd></button>
     <div class="menu-divider"></div>
     <label class="menu-setting"><span>Automatically open PDFs</span><input id="auto-open" type="checkbox" checked role="switch" /></label>
+    <label class="menu-setting"><span>Two-page spread</span><input id="spread" type="checkbox" role="switch" /></label>
+    <label class="menu-setting"><span>Invert page colors</span><input id="page-invert" type="checkbox" role="switch" /></label>
     <span id="handling-detail" class="menu-note">Local-first PDF viewing</span>
   </div>
   <div id="find-bar" class="find-bar" hidden>
@@ -112,11 +115,17 @@ class Viewer {
   private openedAt = 0;
   private firstPaint = false;
   private sessionErrors = new Set<number>();
+  private spread = false;
+  private presenting = false;
+  private savedZoomMode = '';
 
   constructor() {
     let theme = '';
     try { theme = localStorage.getItem('folio-theme') || ''; } catch { /* Restricted storage uses the default black theme. */ }
     this.setTheme(theme === 'light' ? 'light' : 'dark');
+    try { this.spread = localStorage.getItem('folio-spread') === '1'; } catch { /* Defaults apply without storage. */ }
+    $<HTMLInputElement>('#spread').checked = this.spread;
+    try { this.setInvert(localStorage.getItem('folio-invert') === '1'); } catch { /* Defaults apply without storage. */ }
     this.events();
     void this.settings();
     void this.initialSource();
@@ -157,6 +166,18 @@ class Viewer {
     $('#zoom-in').onclick = () => this.zoom(String(Math.min(4, this.scale * 1.2)));
     $('#zoom-out').onclick = () => this.zoom(String(Math.max(0.25, this.scale / 1.2)));
     $('#rotate').onclick = () => this.rotate();
+    $('#present').onclick = () => { void this.presentation(!this.presenting); };
+    document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && this.presenting) void this.presentation(false); });
+    $('#spread').onchange = () => {
+      const on = $<HTMLInputElement>('#spread').checked;
+      try { localStorage.setItem('folio-spread', on ? '1' : '0'); } catch { /* Still applies for this session. */ }
+      this.spread = on;
+      if (this.info) this.relayout(true);
+    };
+    $('#page-invert').onchange = () => {
+      try { localStorage.setItem('folio-invert', $<HTMLInputElement>('#page-invert').checked ? '1' : '0'); } catch { /* Still applies for this session. */ }
+      this.setInvert($<HTMLInputElement>('#page-invert').checked);
+    };
     $('#save-file').onclick = () => this.download();
     $('#print').onclick = () => { void this.print(); };
     $('#native').onclick = $('#state-native').onclick = () => { void this.native(); };
@@ -202,6 +223,23 @@ class Viewer {
     document.documentElement.dataset.theme = theme;
     $('#theme-toggle').innerHTML = icon(theme === 'dark' ? 'sun' : 'moon');
     try { localStorage.setItem('folio-theme', theme); } catch { /* Theme still works without storage. */ }
+  }
+  private setInvert(on: boolean) {
+    document.body.classList.toggle('inverting', on);
+    $<HTMLInputElement>('#page-invert').checked = on;
+  }
+  private async presentation(on: boolean) {
+    this.presenting = on;
+    document.body.classList.toggle('presenting', on);
+    $('#more-menu').hidden = true;
+    if (on) {
+      this.savedZoomMode = this.zoomMode;
+      this.zoom('page');
+      try { await document.documentElement.requestFullscreen(); } catch { /* Presentation also works without fullscreen. */ }
+    } else {
+      this.zoom(this.savedZoomMode || 'width');
+      if (document.fullscreenElement) void document.exitFullscreen();
+    }
   }
   private async settings() {
     const handler = mimeHandler();
@@ -258,6 +296,36 @@ class Viewer {
     try { const path = new URL(url).pathname; return decodeURIComponent(path.split('/').pop() || 'Document.pdf'); }
     catch { return 'Document.pdf'; }
   }
+  private positionKey() {
+    if (!this.sourceUrl || !/^https?:/.test(this.sourceUrl)) return '';
+    try { const url = new URL(this.sourceUrl); return 'folio-position:' + url.origin + url.pathname; }
+    catch { return ''; }
+  }
+  private saveTimer = 0;
+  private savePosition() {
+    const key = this.positionKey();
+    if (!key || !this.info) return;
+    clearTimeout(this.saveTimer);
+    this.saveTimer = window.setTimeout(() => {
+      const value = { page: this.currentPage, zoomMode: this.zoomMode };
+      try {
+        if (inExtension()) void chrome.storage.session.set({ [key]: value });
+        else localStorage.setItem(key, JSON.stringify(value));
+      } catch { /* A lost position is harmless. */ }
+    }, 800);
+  }
+  private async restorePosition() {
+    const key = this.positionKey();
+    const count = this.info?.count;
+    if (!key || !count) return;
+    try {
+      const value = inExtension()
+        ? (await chrome.storage.session.get(key))[key] as { page?: number; zoomMode?: string } | undefined
+        : JSON.parse(localStorage.getItem(key) || 'null') as { page?: number; zoomMode?: string } | null;
+      if (typeof value?.zoomMode === 'string' && value.zoomMode !== this.zoomMode) this.zoom(value.zoomMode, false);
+      if (typeof value?.page === 'number' && value.page > 1 && value.page <= count) this.go(value.page);
+    } catch { /* No saved position for this source. */ }
+  }
   private async fetchSource(url: string, title = this.filename(url)) {
     if (!this.streamContext) {
       try { if (!['https:', 'http:', 'file:'].includes(new URL(url).protocol)) throw new Error(); }
@@ -308,6 +376,7 @@ class Viewer {
     // MIME-handler frames cannot navigate to another extension document. Keep
     // the same document and tear down the PDF session instead of following a URL.
     this.downloadAbort?.abort(); this.downloadAbort = undefined;
+    if (this.presenting) void this.presentation(false);
     this.endSession();
     this.blob = undefined; this.title = ''; this.sourceUrl = ''; this.streamContext = false;
     this.rotation = 0; this.scale = 1; this.zoomMode = 'width'; this.currentPage = 1;
@@ -362,6 +431,7 @@ class Viewer {
       $('#viewport').scrollTop = 0;
       this.zoom(this.zoomMode, false);
       this.update();
+      void this.restorePosition();
       if (!$('#sidebar').hidden) this.updateThumbnails();
       // Outline extraction goes behind visible rendering.
       this.scheduler.enqueue('outline', 500, async () => {
@@ -404,18 +474,33 @@ class Viewer {
     if (!this.info) return;
     const viewport = $('#viewport');
     const anchor = this.layout ? this.layout.pageAt(viewport.scrollTop + 1) : 0;
-    const fraction = this.layout ? (viewport.scrollTop - this.layout.offsets[anchor]) / this.layout.sizes[anchor].height : 0;
+    const anchorHeight = this.layout ? this.layout.rowHeight(anchor) : 1;
+    const fraction = this.layout ? (viewport.scrollTop - this.layout.offsets[anchor]) / anchorHeight : 0;
     const page = this.info.pages[Math.min(this.currentPage - 1, this.info.count - 1)];
     const width = this.rotation % 180 ? page.height : page.width;
     const height = this.rotation % 180 ? page.width : page.height;
-    if (this.zoomMode === 'width') this.scale = Math.min(4, Math.max(0.1, (viewport.clientWidth - 80) / width));
+    if (this.zoomMode === 'width') {
+      const basis = this.spread ? this.spreadWidth() : width;
+      this.scale = Math.min(4, Math.max(0.1, (viewport.clientWidth - 80) / basis));
+    }
     else if (this.zoomMode === 'page') this.scale = Math.min((viewport.clientWidth - 80) / width, (viewport.clientHeight - 64) / height, 4);
     else this.scale = Math.min(4, Math.max(0.25, Number(this.zoomMode) || 1));
-    this.layout = new PageLayout(this.info.pages, this.scale, this.rotation);
+    this.layout = new PageLayout(this.info.pages, this.scale, this.rotation, this.spread);
     const pages = $('#pages'); pages.style.height = `${this.layout.totalHeight}px`; pages.style.minWidth = `${this.layout.maxWidth + 80}px`;
-    if (preserve) viewport.scrollTop = this.layout.offsets[anchor] + fraction * this.layout.sizes[anchor].height;
+    if (preserve) viewport.scrollTop = this.layout.offsets[anchor] + fraction * this.layout.rowHeight(anchor);
     for (const [index, view] of this.views) this.position(index, view);
     this.updateSoon();
+  }
+  /** Widest unscaled spread across all page pairs, for fit-width in spread mode. */
+  private spreadWidth() {
+    const pages = this.info!.pages;
+    const horizontal = (size: PageSize) => this.rotation % 180 ? size.height : size.width;
+    let widest = 0;
+    for (let index = 0; index < pages.length; index += 2) {
+      const second = index + 1 < pages.length ? horizontal(pages[index + 1]) + PAGE_GAP : 0;
+      widest = Math.max(widest, horizontal(pages[index]) + second);
+    }
+    return widest;
   }
   private rotate() {
     if (!this.info) return;
@@ -431,6 +516,8 @@ class Viewer {
     const size = this.layout!.sizes[index];
     view.element.style.width = `${size.width}px`; view.element.style.height = `${size.height}px`;
     view.element.style.transform = `translateY(${this.layout!.offsets[index]}px)`;
+    if (this.spread) view.element.style.left = `${this.layout!.left[index]}px`;
+    else view.element.style.removeProperty('left'); // The stylesheet centers single pages.
     // Keep the scaled text layer in sync even when zooming skips a repaint.
     view.text.style.transform = `scale(${this.scale})`;
     // Existing raster remains a cheap preview while a new zoom render is queued.
@@ -442,6 +529,7 @@ class Viewer {
     const indices = this.layout.window(viewport.scrollTop, viewport.clientHeight, Math.min(700, viewport.clientHeight));
     const wanted = new Set(indices);
     this.currentPage = this.layout.pageAt(viewport.scrollTop + Math.min(200, viewport.clientHeight * 0.25)) + 1;
+    this.savePosition();
     const pageInput = $<HTMLInputElement>('#page-number');
     if (document.activeElement !== pageInput) pageInput.value = String(this.currentPage);
     $<HTMLButtonElement>('#previous').disabled = this.currentPage === 1;
@@ -529,7 +617,29 @@ class Viewer {
       }
     }
     this.scheduler.retain((key) => wantedKeys.has(key) || key.startsWith('search:') && key === `search:${this.searchEpoch}:${this.searchPage}` || key.startsWith('thumb:') && !$('#sidebar').hidden);
+    // With no rendering work queued, quietly prepare the neighbouring pages.
+    if (!this.scheduler.queued) this.prefetch(indices);
     this.updateThumbnails();
+  }
+  private prefetch(indices: number[]) {
+    if (!this.info || !this.engine || !this.scheduler || !this.layout) return;
+    if (this.scheduler.running || this.cache.bytes > 64 * 1024 * 1024) return;
+    const epoch = this.epoch, rotation = this.rotation, wanted = new Set(indices);
+    for (const page of [this.currentPage + 1, this.currentPage + 2, this.currentPage - 1]) {
+      const index = page - 1;
+      if (index < 0 || index >= this.info.count || wanted.has(index)) continue;
+      const rasterScale = renderScale(this.scale, devicePixelRatio, this.info.pages[index]);
+      const key = `page:${index}:${rasterScale.toFixed(4)}:${rotation}`;
+      if (this.cache.has(key)) continue;
+      this.scheduler.enqueue(key, 5000, async () => {
+        const raster = await this.engine!.render(index + 1, rasterScale, rotation);
+        if (epoch !== this.epoch || this.rotation !== rotation) { raster.bitmap.close(); return; }
+        this.cache.set(key, raster, raster.width * raster.height * 4);
+        const live = this.views.get(index);
+        if (live && live.key === '') this.paint(live, key, raster);
+        $('#render-status').textContent = `Cache ${(this.cache.bytes / 1_048_576).toFixed(0)} / 96 MB`;
+      });
+    }
   }
   private paint(view: PageView, key: string, raster: Raster) {
     view.canvas.width = raster.width; view.canvas.height = raster.height;
@@ -742,6 +852,7 @@ class Viewer {
     if (event.key === '+' || event.key === '=') { event.preventDefault(); $('#zoom-in').click(); }
     else if (event.key === '-') { event.preventDefault(); $('#zoom-out').click(); }
     else if (event.key.toLowerCase() === 'r') this.rotate();
+    else if (event.key.toLowerCase() === 'p') { event.preventDefault(); void this.presentation(!this.presenting); }
     else if (event.key.toLowerCase() === 's' && !modifier) this.toggleSidebar();
     else if (event.key === 'ArrowLeft') this.go(this.currentPage - 1);
     else if (event.key === 'ArrowRight') this.go(this.currentPage + 1);

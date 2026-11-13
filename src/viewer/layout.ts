@@ -1,31 +1,70 @@
 import type { PageSize } from '../engine/types';
+export const PAGE_GAP = 24;
+
 export class PageLayout {
+  /** Top offset per page (both pages of a spread share it). */
   offsets: number[] = [];
   sizes: PageSize[] = [];
+  /** Horizontal position per page inside the pages box; used in spread mode. */
+  left: number[] = [];
+  rows: Array<{ offset: number; height: number; first: number }> = [];
   totalHeight = 0;
   maxWidth = 0;
-  constructor(pages: PageSize[], scale: number, rotation: number, readonly gap = 24, readonly padding = 32) {
-    let offset = padding;
-    for (const page of pages) {
-      const size = rotation % 180 ? { width: page.height * scale, height: page.width * scale } : { width: page.width * scale, height: page.height * scale };
-      this.offsets.push(offset); this.sizes.push(size);
-      this.maxWidth = Math.max(this.maxWidth, size.width);
-      offset += size.height + gap;
+  private perRow: 1 | 2;
+
+  constructor(pages: PageSize[], scale: number, rotation: number, spread = false, readonly gap = PAGE_GAP, readonly padding = 32) {
+    this.perRow = spread ? 2 : 1;
+    const scaled = (page: PageSize): PageSize =>
+      rotation % 180 ? { width: page.height * scale, height: page.width * scale } : { width: page.width * scale, height: page.height * scale };
+    type Row = { first: number; second?: number; width: number; height: number };
+    const rowList: Row[] = [];
+    for (let index = 0; index < pages.length; index += this.perRow) {
+      const first = scaled(pages[index]);
+      const second = spread && index + 1 < pages.length ? scaled(pages[index + 1]) : undefined;
+      rowList.push({
+        first: index, second: second ? index + 1 : undefined,
+        width: first.width + (second ? second.width + this.gap : 0),
+        height: Math.max(first.height, second?.height ?? first.height),
+      });
     }
-    this.totalHeight = offset - gap + padding;
+    this.maxWidth = rowList.reduce((width, row) => Math.max(width, row.width), 0);
+    let offset = this.padding;
+    for (const row of rowList) {
+      const inset = spread ? (this.maxWidth - row.width) / 2 : 0;
+      this.rows.push({ offset, height: row.height, first: row.first });
+      this.offsets[row.first] = offset; this.sizes[row.first] = scaled(pages[row.first]); this.left[row.first] = inset;
+      if (row.second !== undefined) {
+        this.offsets[row.second] = offset;
+        this.sizes[row.second] = scaled(pages[row.second]);
+        this.left[row.second] = inset + this.sizes[row.first].width + this.gap;
+      }
+      offset += row.height + this.gap;
+    }
+    this.totalHeight = offset - this.gap + this.padding;
   }
-  pageAt(y: number) {
-    let low = 0, high = this.offsets.length - 1;
+  private rowIndexAt(y: number) {
+    let low = 0, high = this.rows.length - 1;
     while (low < high) {
       const mid = Math.ceil((low + high) / 2);
-      if (this.offsets[mid] <= y) low = mid; else high = mid - 1;
+      if (this.rows[mid].offset <= y) low = mid; else high = mid - 1;
     }
     return low;
   }
+  pageAt(y: number) {
+    return this.rows[this.rowIndexAt(y)]?.first ?? 0;
+  }
+  rowHeight(index: number) {
+    return this.rows[Math.floor(index / this.perRow)]?.height ?? 0;
+  }
   window(top: number, height: number, overscan = 600) {
-    const first = this.pageAt(Math.max(0, top - overscan));
-    const last = this.pageAt(top + height + overscan);
-    return Array.from({ length: last - first + 1 }, (_, i) => first + i);
+    const first = this.rowIndexAt(Math.max(0, top - overscan));
+    const last = this.rowIndexAt(top + height + overscan);
+    const indices: number[] = [];
+    for (let row = first; row <= last; row++) {
+      indices.push(this.rows[row].first);
+      if (this.perRow === 2 && this.rows[row].first + 1 < this.offsets.length) indices.push(this.rows[row].first + 1);
+    }
+    return indices;
   }
 }
 

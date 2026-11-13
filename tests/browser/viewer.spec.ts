@@ -117,6 +117,40 @@ test('reopens a document after a reload with the cached engine module', async ({
   await expect(page.locator('#page-count')).toHaveText('4');
 });
 
+test('spread mode pairs pages, presentation hides the chrome, and inversion persists', async ({ page }) => {
+  await page.goto('/viewer.html');
+  await page.locator('#file-input').setInputFiles({ name: 'spread.pdf', mimeType: 'application/pdf', buffer: makePdf(6) });
+  await expect(page.locator('.pdf-page.rendered').first()).toBeVisible();
+  await page.getByRole('button', { name: 'More options' }).click();
+  await page.locator('#spread').check();
+  // The second page of the first spread sits to the right of the first.
+  await expect.poll(async () => page.locator('.pdf-page[data-page="2"]').evaluate((el) => parseFloat(el.style.left || '0'))).toBeGreaterThan(0);
+  await page.locator('#page-invert').check();
+  await expect(page.locator('body')).toHaveClass(/inverting/);
+  await page.keyboard.press('Escape'); // Close the menu.
+  await page.locator('#viewport').focus(); // Shortcuts ignore focused inputs.
+  await page.keyboard.press('p'); // Presentation mode.
+  await expect(page.locator('body')).toHaveClass(/presenting/);
+  await expect(page.locator('.toolbar')).toBeHidden();
+  await page.keyboard.press('p'); // Back to reading.
+  await expect(page.locator('.toolbar')).toBeVisible();
+  await page.reload();
+  await expect(page.locator('body')).toHaveClass(/inverting/); // The inversion choice survives a reload.
+  await expect(page.locator('body')).not.toHaveClass(/presenting/);
+});
+
+test('restores the last reading position for a remote document', async ({ page }) => {
+  await page.route('**/restore.pdf', (route) => route.fulfill({ contentType: 'application/pdf', body: makePdf(12) }));
+  await page.goto('/viewer.html#source=http://127.0.0.1:4173/restore.pdf');
+  await expect(page.locator('.pdf-page.rendered').first()).toBeVisible();
+  await page.locator('#page-number').fill('5'); await page.locator('#page-number').press('Enter'); await page.locator('#page-number').blur();
+  await expect(page.locator('.pdf-page[data-page="5"]').first()).toBeVisible();
+  await page.waitForTimeout(1100); // Let the debounced position save fire.
+  await page.reload();
+  await expect(page.locator('.pdf-page.rendered').first()).toBeVisible();
+  await expect.poll(() => page.locator('#page-number').inputValue()).toBe('5');
+});
+
 test('Folio home clears the document and supports reopening with keyboard navigation', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/viewer.html');
