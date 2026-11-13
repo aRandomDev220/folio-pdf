@@ -21,9 +21,13 @@ The compiled build is generated locally in `dist/`. From a fresh clone, run `npm
 - Local file picker, drag-and-drop, remote PDFs, and password-protected documents.
 - Continuous scrolling, page jumps, zoom, fit width/page, and rotation.
 - Compact 40px toolbar to leave more vertical space for the document.
+- Two-page spread mode and a fullscreen presentation mode (toolbar hidden, fit-page).
 - Lazy thumbnails and document bookmarks.
 - Selectable text, incremental text search, internal links, and external links.
-- Original-byte download. Printing opens the browser’s print dialog automatically from a dedicated print tab, using the original PDF bytes. The reader stays open; the print tab also provides a Print again button.
+- Original-byte download with a live download-progress readout. Printing opens the browser’s print dialog automatically from a dedicated print tab, using the original PDF bytes. The reader stays open; the print tab also provides a Print again button.
+- Optional page-color inversion for night reading, alongside the black and light themes.
+- The last page and zoom mode are remembered per remote document and restored on reopen.
+- The rendering engine stays warm between documents and caches its compiled WebAssembly module, so reopening a PDF skips compilation.
 - Neutral black theme by default, with a saved monochrome light-theme option and an automatic-opening switch in the More menu.
 - The Folio home button returns to the file picker in place and releases the current document’s rendering resources.
 - Clear invalid-document and unavailable-source states, with native-viewer fallback for remotely opened PDFs.
@@ -43,6 +47,7 @@ Everything is processed on the device. Documents are not uploaded, and there is 
 | Ctrl+wheel | Zoom |
 | R | Rotate clockwise |
 | S | Toggle sidebar |
+| P | Presentation mode |
 | Left / Right | Previous / next page |
 | Home / End | First / last page |
 | Page Up / Page Down / Space | Scroll |
@@ -68,14 +73,17 @@ Targets desktop Chromium browsers with Manifest V3 support, version 120 or newer
 
 ## Performance architecture
 
-- Poppler/Splash parsing and rasterization run in a dedicated worker.
+- Poppler/Splash parsing and rasterization run in a dedicated worker, which stays warm across documents; only the document is released.
 - A single outstanding worker task prevents a scroll gesture from creating an unbounded render backlog.
 - Visible pages take priority over text extraction, thumbnails, bookmarks, and search.
+- Pages above 3 million target pixels get a fast low-resolution preview pass first, so a heavy page shows content while its full rasterization completes.
+- Raster scales are quantized to a 1/32 grid, so zoom gestures reuse cached rasters instead of rendering a new bitmap per wheel notch; the text layer is scaled with a CSS transform instead of being rebuilt per zoom step.
+- With the queue idle, the neighbouring pages are prefetched into the raster cache.
 - Page canvas elements are virtualized; off-screen canvases are zero-sized and removed.
 - Raster bitmaps use a **96 MiB LRU budget** with explicit `ImageBitmap.close()` on eviction.
 - Text and link caches have separate 8 MiB and 1 MiB budgets.
 - Raster resolution is capped at 8 million pixels per page, with a separate 12-million-pixel engine guard. Existing canvases provide a preview during zoom.
-- Fonts and character maps are bundled and read lazily by the worker.
+- Fonts and character maps are bundled and read lazily by the worker. The compiled WebAssembly module is cached in IndexedDB to skip compilation on later sessions.
 - Original file bytes and WASM heap memory are additional to the bitmap cache. The total process memory is not capped at 96 MiB. Documents are fully acquired before the initial Poppler open; progressive network rendering is not implemented in this version.
 
 ### Measured baseline
@@ -122,11 +130,11 @@ npm run test:codecs:prepare # Optional image-codec fixtures; requires Pillow
 npm run test:browser        # Real worker rendering and packaged-extension checks
 ```
 
-Set `FOLIO_BROWSER=/path/to/chromium` to test with a specific executable. If this machine’s existing Chromium test binary is available, the test configuration reuses it. The legacy compatibility test deliberately removes the MIME-handler API from its isolated worker context; it does not modify a real browser profile. Codec tests explicitly skip when their generated fixtures are missing.
+Set `FOLIO_BROWSER=/path/to/chromium` to test with a specific executable. If this machine’s existing Chromium test binary is available, the test configuration reuses it. The legacy compatibility test deliberately removes the MIME-handler API from its isolated worker context; it does not modify a real browser profile. Codec tests explicitly skip when their generated fixtures are missing. GitHub Actions runs `npm run check` plus the browser suite under `xvfb` on every push and pull request.
 
 `tests/browser/printing.spec.ts` uses an isolated headed browser to verify that menu printing and Ctrl/Cmd+P open the actual print-preview dialog, including automatic takeover disabled and cancel/retry. On Linux it needs a display (or Xvfb) and skips when `DISPLAY` is absent. These checks do not submit a print job.
 
-No lint command is configured. The implementation is checked by strict TypeScript, focused unit tests and browser integration tests.
+ESLint (typescript-eslint, matching the existing style) runs as part of `npm run check` via `npm run lint`.
 
 ### Release
 
