@@ -13,7 +13,7 @@ The packaged extension is available on the [GitHub Releases](https://github.com/
 
 The compiled build is generated locally in `dist/`. From a fresh clone, run `npm ci` followed by `npm run build`; the bundled Poppler engine assets are included in the repository. For legacy browsers, enable **Allow access to file URLs** on the extension details page to replace the viewer for `file://` PDFs. File selection and drag-and-drop work without that setting.
 
-`npm run release` generates `releases/folio-0.1.0.zip`, the packaged extension. Extract it before choosing Load unpacked. The accompanying `folio-0.1.0-source.tar.gz` contains the application and corresponding native dependency sources. Release archives are generated locally and are excluded from Git.
+`npm run release` generates `releases/folio-<version>.zip`, the packaged extension. Extract it before choosing Load unpacked. The accompanying `folio-<version>-source.tar.gz` contains the application and corresponding native dependency sources. Release archives are generated locally and are excluded from Git; pushing a `v*` tag publishes both to GitHub Releases automatically.
 
 ## What works
 
